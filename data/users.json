@@ -1,0 +1,234 @@
+{
+  "companies": {
+    "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "vaishnavifalle1@gmail.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance"
+      ],
+      "members": [
+        {
+          "email": "vaishnavifalle1@gmail.com",
+          "name": "vaishnavi",
+          "password": "Vaishnavi",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {},
+        "finance": {}
+      }
+    },
+    "30f45e60-5395-4d08-a93f-e4ae4d238d96": {
+      "name": "FixTest",
+      "industry": "Tech",
+      "size": "1-10",
+      "admin_email": "fix@test.com",
+      "departments": [
+        "HR"
+      ],
+      "members": [
+        {
+          "email": "fix@test.com",
+          "name": "Admin",
+          "password": "password",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {}
+      }
+    },
+    "093aff1a-b3a8-44a7-8e8a-d2e0b229d990": {
+      "name": "acme",
+      "industry": "trcd",
+      "size": "1-10",
+      "admin_email": "abc@gmail.com",
+      "departments": [
+        "HR",
+        "hr"
+      ],
+      "members": [
+        {
+          "email": "abc@gmail.com",
+          "name": "vaish",
+          "password": "Vaishnavi",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "b0deadd9-3520-4bcd-ab89-1247291ea35f": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "Kaushaltrivedi268@gmail.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance"
+      ],
+      "members": [
+        {
+          "email": "Kaushaltrivedi268@gmail.com",
+          "name": "vaishnavi",
+          "password": "Kaushal",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {},
+        "finance": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 13.5,
+        "How Much They Raised": 610.0,
+        "Giants": 1.7,
+        "No Budget": 0.9,
+        "Competition": 0.2,
+        "Poor Market Fit": 0.8,
+        "Acquisition Stagnation": 0.8,
+        "Platform Dependency": 1.4,
+        "Monetization Failure": 1.2,
+        "Niche Limits": 0.8,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 1.3,
+        "Regulatory Pressure": 0.6,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "fd8d79da-01d3-4c45-99d6-60532f4c21aa": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "vaish@gmail.com",
+      "departments": [
+        "HR",
+        "hr"
+      ],
+      "members": [
+        {
+          "email": "vaish@gmail.com",
+          "name": "Vaish",
+          "password": "Vaishu",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 660.0,
+        "Giants": 1.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    }
+  },
+  "invites": {
+    "b1083e01-6fe1-4bf7-85ad-47bf19fd89bc": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "3211ff1c-8d25-45d3-9a0b-1a2c82c20d43": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "453d980c-37f7-482a-8425-b7d28b6cc155": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "6edcf645-559d-44a1-9405-bf9897b4760e": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "df77e0c1-1845-44b9-93eb-f8f373d715f3": {
+      "company_id": "b0deadd9-3520-4bcd-ab89-1247291ea35f",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "227bcdce-4191-4bd7-bc46-85128b3ab258": {
+      "company_id": "b0deadd9-3520-4bcd-ab89-1247291ea35f",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "1630c024-f854-425f-b475-0a6d93a0ce60": {
+      "company_id": "fd8d79da-01d3-4c45-99d6-60532f4c21aa",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    }
+  }
+}
