@@ -16,7 +16,7 @@ export default function LandingPage() {
             Unify risk monitoring across your entire organization. Anticipate bottlenecks, assess department health, and simulate outcomes before they happen.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               href="/register/company" 
               className="px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 font-medium text-white shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/40 hover:scale-105 transition-all duration-300 w-full sm:w-auto text-center"
@@ -24,10 +24,16 @@ export default function LandingPage() {
               Create company account
             </Link>
             <Link 
+              href="/login" 
+              className="px-8 py-4 rounded-full bg-[#13131f] border border-[#1e2035] hover:border-indigo-500/40 hover:bg-[#1a1a2e] font-medium text-slate-300 transition-all duration-300 w-full sm:w-auto text-center"
+            >
+              Sign in
+            </Link>
+            <Link 
               href="/join" 
               className="px-8 py-4 rounded-full bg-[#13131f] border border-[#1e2035] hover:border-slate-600 hover:bg-[#1a1a2e] font-medium text-slate-300 transition-all duration-300 w-full sm:w-auto text-center"
             >
-              Join as team member
+              Join via invite
             </Link>
           </div>
         </div>
