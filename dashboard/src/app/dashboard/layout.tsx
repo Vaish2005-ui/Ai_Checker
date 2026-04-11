@@ -3,17 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Shield, Users, DollarSign, Cog, Target, Briefcase, ChevronLeft, Building2, LogOut, LayoutDashboard, GitBranch, Code2, Network } from "lucide-react";
-
-const DEPT_MAP: any = {
-  hr: { icon: Users, color: "text-purple-400", bg: "bg-purple-500/10" },
-  finance: { icon: DollarSign, color: "text-teal-400", bg: "bg-teal-500/10" },
-  engineering: { icon: Cog, color: "text-amber-400", bg: "bg-amber-500/10" },
-  software: { icon: Code2, color: "text-orange-400", bg: "bg-orange-500/10" },
-  operations: { icon: Target, color: "text-rose-400", bg: "bg-rose-500/10" },
-  security: { icon: Shield, color: "text-blue-400", bg: "bg-blue-500/10" },
-  marketing: { icon: Briefcase, color: "text-pink-400", bg: "bg-pink-500/10" },
-};
+import { Shield, Users, DollarSign, Cog, Target, Briefcase, ChevronLeft, Building2, LogOut, LayoutDashboard, GitBranch, Code2, Network, Search, Bell } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -37,15 +27,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setUserDept(d);
     setUserName(n);
 
-    fetch(`http://localhost:8000/company/departments?company_id=${compId}`)
+    fetch(`http://localhost:8002/company/departments?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         let depts = Array.isArray(data) ? data : [];
-        // Role-based filtering: employees see only their own department
         if (r === "employee" && d) {
           depts = depts.filter((dept: any) => dept.name.toLowerCase() === d.toLowerCase());
         }
-        // team_leader sees only their department too
         if (r === "team_leader" && d) {
           depts = depts.filter((dept: any) => dept.name.toLowerCase() === d.toLowerCase());
         }
@@ -59,125 +47,75 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     router.push("/");
   };
 
-  const roleBadge = role === "admin" 
-    ? { label: "Admin", cls: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30" }
-    : role === "team_leader"
-    ? { label: "Leader", cls: "bg-teal-500/15 text-teal-400 border-teal-500/30" }
-    : { label: "Employee", cls: "bg-slate-500/15 text-slate-400 border-slate-500/30" };
+  const navItems = role === "admin" ? [
+    { name: 'Overview', href: '/admin', show: true },
+    { name: 'Org Tree', href: '/admin/org-tree', show: true },
+    ...departments.map(d => ({ name: d.name, href: `/dashboard/${d.name.toLowerCase()}`, show: true })),
+    { name: 'Startup Profile', href: '/admin/profile', show: true }
+  ] : departments.map(d => ({ name: d.name, href: `/dashboard/${d.name.toLowerCase()}`, show: true }));
 
   return (
-    <div className="flex h-screen bg-[#0a0a0f] text-slate-200 overflow-hidden font-sans">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 flex-shrink-0 bg-[#0f0f1a] border-r border-[#1e2035] flex flex-col">
-        {/* Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-[#1e2035]">
-          <Link href="/select-department" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm font-medium">
-            <ChevronLeft className="w-4 h-4" />
-            Workspace
-          </Link>
-          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${roleBadge.cls}`}>
-            {roleBadge.label}
-          </span>
-        </div>
-
-        {/* User info */}
-        {userName && (
-          <div className="px-5 py-3 border-b border-[#1e2035]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                {userName.charAt(0).toUpperCase()}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-white truncate">{userName}</p>
-                <p className="text-[10px] text-slate-500 capitalize">{userDept === "all" ? "All Departments" : userDept}</p>
-              </div>
+    <div className="flex flex-col min-h-screen bg-[#F7F9FB] text-slate-800 font-sans">
+      {/* Top Navigation Bar */}
+      <header className="h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-50">
+        
+        {/* Brand & Links */}
+        <div className="flex items-center gap-8">
+          <Link href="/select-department" className="flex items-center gap-2 text-slate-900 font-bold text-lg">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-white" />
             </div>
-          </div>
-        )}
-
-        <div className="flex-1 overflow-y-auto py-4">
-          {/* Projects / Departments */}
-          <div className="px-4 mb-3">
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-2">
-              {role === "admin" ? "All Projects" : "My Project"}
-            </p>
-          </div>
-          <nav className="space-y-0.5 px-3">
-            {departments.map((dept) => {
-              const dName = dept.name.toLowerCase();
-              const isActive = pathname === `/dashboard/${dName}`;
-              const Icon = DEPT_MAP[dName]?.icon || Cog;
-              const color = DEPT_MAP[dName]?.color || "text-slate-400";
-              
+            Acme Corp
+          </Link>
+          
+          <nav className="hidden md:flex items-center gap-2">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
               return (
                 <Link 
-                  key={dept.name} 
-                  href={`/dashboard/${dName}`}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+                  key={item.href} 
+                  href={item.href}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     isActive 
-                      ? "bg-[#1e2035] text-white shadow-sm shadow-indigo-500/5" 
-                      : "text-slate-400 hover:bg-[#13131f] hover:text-slate-200"
+                      ? "bg-black text-white" 
+                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? color : "text-slate-500 group-hover:text-slate-400"}`} />
-                  <span className="capitalize font-medium text-sm flex-1">{dept.name}</span>
-                  {dept.member_count > 0 && (
-                    <span className="text-[10px] bg-[#1e2035] text-slate-500 px-1.5 py-0.5 rounded-md font-mono">
-                      {dept.member_count}
-                    </span>
-                  )}
+                  <span className="capitalize">{item.name}</span>
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Footer actions */}
-        <div className="p-3 border-t border-[#1e2035] space-y-0.5">
-          {role === "admin" && (
-            <>
-              <Link 
-                href="/admin" 
-                className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors text-sm font-medium ${
-                  pathname === "/admin" ? "bg-[#1e2035] text-white" : "text-slate-400 hover:bg-[#13131f] hover:text-white"
-                }`}
-              >
-                <Building2 className="w-4 h-4" />
-                Admin Overview
-              </Link>
-              <Link 
-                href="/admin/org-tree" 
-                className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors text-sm font-medium ${
-                  pathname === "/admin/org-tree" ? "bg-[#1e2035] text-white" : "text-slate-400 hover:bg-[#13131f] hover:text-white"
-                }`}
-              >
-                <Network className="w-4 h-4" />
-                Org Tree
-              </Link>
-              <Link 
-                href="/admin/profile" 
-                className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors text-sm font-medium ${
-                  pathname === "/admin/profile" ? "bg-[#1e2035] text-white" : "text-slate-400 hover:bg-[#13131f] hover:text-white"
-                }`}
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                Startup Profile
-              </Link>
-            </>
-          )}
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-slate-400 hover:bg-[#13131f] hover:text-red-400 transition-colors text-sm font-medium"
-          >
-            <LogOut className="w-4 h-4" />
-            Sign Out
+        {/* Right Utilities */}
+        <div className="flex items-center gap-5">
+          <button className="text-slate-400 hover:text-slate-900 transition-colors">
+            <Search className="w-5 h-5" />
           </button>
-        </div>
+          <button className="text-slate-400 hover:text-slate-900 transition-colors relative">
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          </button>
+          
+          <div className="h-6 w-px bg-slate-200 mx-1"></div>
 
-      </aside>
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden md:block">
+              <p className="text-sm font-semibold text-slate-900 line-clamp-1">{userName}</p>
+              <p className="text-xs text-slate-500 capitalize">{role?.replace("_"," ")}</p>
+            </div>
+            <button onClick={handleLogout} className="relative group focus:outline-none">
+              <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 font-bold shadow-sm hover:ring-2 hover:ring-slate-300 transition-all">
+                {userName ? userName.charAt(0).toUpperCase() : "U"}
+              </div>
+            </button>
+          </div>
+        </div>
+      </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto relative">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto overflow-y-auto relative pt-8 px-8">
         {children}
       </main>
     </div>

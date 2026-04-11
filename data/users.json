@@ -237,6 +237,56 @@
         "lead_time_days": 14.0,
         "mttr_hours": 24.0
       }
+    },
+    "bfda2905-aab3-4bad-93f3-67e50cb4ebbf": {
+      "name": "Bento Labs",
+      "industry": "Software",
+      "size": "1-10",
+      "admin_email": "admin@bento.com",
+      "departments": [
+        "HR",
+        "hr",
+        "software"
+      ],
+      "members": [
+        {
+          "email": "admin@bento.com",
+          "name": "Bento Admin",
+          "password": "password",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "software": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
     }
   },
   "invites": {

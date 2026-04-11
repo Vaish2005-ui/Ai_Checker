@@ -199,7 +199,7 @@ export default function AssessPage() {
         sector: data.sector,
       };
 
-      const res = await fetch("http://localhost:8000/full_report", {
+      const res = await fetch("http://localhost:8002/full_report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

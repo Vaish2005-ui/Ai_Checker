@@ -28,17 +28,17 @@ export default function AdminPage() {
 
     const fetchData = async () => {
       try {
-        const dRes = await fetch(`http://localhost:8000/company/departments?company_id=${compId}`);
+        const dRes = await fetch(`http://localhost:8002/company/departments?company_id=${compId}`);
         const dData = await dRes.json();
         setDepartments(dData);
 
-        const mRes = await fetch(`http://localhost:8000/company/members?company_id=${compId}`);
+        const mRes = await fetch(`http://localhost:8002/company/members?company_id=${compId}`);
         const mData = await mRes.json();
         setMembers(mData);
 
         const risks = await Promise.all(
           dData.map(async (d: any) => {
-            const rRes = await fetch(`http://localhost:8000/department/${compId}/${d.name}/risk`);
+            const rRes = await fetch(`http://localhost:8002/department/${compId}/${d.name}/risk`);
             return await rRes.json();
           })
         );
@@ -56,7 +56,7 @@ export default function AdminPage() {
     e.preventDefault();
     const compId = localStorage.getItem("company_id");
     try {
-      const res = await fetch("http://localhost:8000/company/invite", {
+      const res = await fetch("http://localhost:8002/company/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -19,7 +19,7 @@ function JoinContent() {
   useEffect(() => {
     if (!token) return;
     
-    fetch(`http://localhost:8000/auth/invite-info/${token}`)
+    fetch(`http://localhost:8002/auth/invite-info/${token}`)
       .then(res => res.json())
       .then(data => {
         if (data.detail) {
@@ -38,7 +38,7 @@ function JoinContent() {
     if (!token) return;
     
     try {
-      const res = await fetch("http://localhost:8000/auth/join", {
+      const res = await fetch("http://localhost:8002/auth/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

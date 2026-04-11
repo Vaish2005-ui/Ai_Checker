@@ -30,7 +30,7 @@ export default function SelectDepartment() {
 
     // Role-based routing: Admin normally goes to /admin, team_leader goes to specific dashboard
     // But if we landed here, we show the departments available
-    fetch(`http://localhost:8000/company/departments?company_id=${compId}`)
+    fetch(`http://localhost:8002/company/departments?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         setDepartments(Array.isArray(data) ? data : []);

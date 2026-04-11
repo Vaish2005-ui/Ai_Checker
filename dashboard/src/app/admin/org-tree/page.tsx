@@ -30,7 +30,7 @@ export default function OrgTreePage() {
       return;
     }
 
-    fetch(`http://localhost:8000/company/org-tree?company_id=${compId}`)
+    fetch(`http://localhost:8002/company/org-tree?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         setTree(data);
@@ -43,9 +43,9 @@ export default function OrgTreePage() {
     e.preventDefault();
     const compId = localStorage.getItem("company_id");
     try {
-      await fetch(`http://localhost:8000/company/add-department?company_id=${compId}&department=${encodeURIComponent(newDept)}`, { method: "POST" });
+      await fetch(`http://localhost:8002/company/add-department?company_id=${compId}&department=${encodeURIComponent(newDept)}`, { method: "POST" });
       // Refresh tree
-      const res = await fetch(`http://localhost:8000/company/org-tree?company_id=${compId}`);
+      const res = await fetch(`http://localhost:8002/company/org-tree?company_id=${compId}`);
       setTree(await res.json());
       setNewDept("");
       setShowAddDept(false);

@@ -49,7 +49,7 @@ export default function DepartmentSetup() {
       
       for (const deptId of activeIds) {
         if (invites[deptId]) {
-          await fetch("http://localhost:8000/company/invite", {
+          await fetch("http://localhost:8002/company/invite", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -63,7 +63,7 @@ export default function DepartmentSetup() {
       
       // Update the company's active departments (We'll use update-metrics dummy call to just register them)
       for (const deptId of activeIds) {
-        await fetch("http://localhost:8000/department/update-metrics", {
+        await fetch("http://localhost:8002/department/update-metrics", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
