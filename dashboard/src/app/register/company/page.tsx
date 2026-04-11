@@ -28,6 +28,8 @@ export default function RegisterCompany() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("company_id", data.company_id);
         localStorage.setItem("role", data.role);
+        localStorage.setItem("department", "all");
+        localStorage.setItem("user_name", form.admin_name);
         router.push("/onboarding/departments");
       } else {
         alert(data.detail || "Registration failed");

@@ -52,6 +52,11 @@ async function post(url: string, body: object) {
   return res.json();
 }
 
+async function get(url: string) {
+  const res = await fetch(`${BASE}${url}`);
+  return res.json();
+}
+
 export const predict           = (p: Profile) => post("/predict", p);
 export const getImpact         = (p: Profile) => post("/impact", p);
 export const getTopImprovements= (p: Profile) => post("/top_improvements", p);
@@ -77,6 +82,65 @@ export async function getFullReport(p: Profile, weeks = 12) {
   const res = await fetch(`${BASE}/full_report?weeks=${weeks}`, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify(p),
+  });
+  return res.json();
+}
+
+// ── NEW: Company & Auth helpers ────────────────────────────────────────────────
+
+export const getOrgTree = (companyId: string) =>
+  get(`/company/org-tree?company_id=${companyId}`);
+
+export const getDepartments = (companyId: string) =>
+  get(`/company/departments?company_id=${companyId}`);
+
+export const getMembers = (companyId: string) =>
+  get(`/company/members?company_id=${companyId}`);
+
+export const getDeptRisk = (companyId: string, dept: string) =>
+  get(`/department/${companyId}/${dept}/risk`);
+
+export const getDeptConfig = (dept: string) =>
+  get(`/department/config/${dept}`);
+
+// ── Board / Task helpers ──────────────────────────────────────────────────────
+export const getBoardTasks = (companyId: string, dept: string) =>
+  get(`/department/${companyId}/${dept}/board`);
+
+export const createTask = (companyId: string, dept: string, task: any) =>
+  post(`/department/${companyId}/${dept}/board/task`, task);
+
+export async function updateTaskStatus(companyId: string, dept: string, taskId: string, status: string) {
+  const res = await fetch(`${BASE}/department/${companyId}/${dept}/board/task/${taskId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  return res.json();
+}
+
+export async function deleteTask(companyId: string, dept: string, taskId: string) {
+  const res = await fetch(`${BASE}/department/${companyId}/${dept}/board/task/${taskId}`, {
+    method: "DELETE",
+  });
+  return res.json();
+}
+
+// ── Invite helpers ────────────────────────────────────────────────────────────
+export const inviteUser = (companyId: string, department: string, email: string, role: string = "team_leader") =>
+  post("/company/invite", { company_id: companyId, department, email, role });
+
+export const inviteEmployee = (companyId: string, department: string, email: string) =>
+  inviteUser(companyId, department, email, "employee");
+
+// ── Software Dev Metrics ──────────────────────────────────────────────────────
+export const getSoftwareDevMetrics = (companyId: string) =>
+  get(`/department/${companyId}/software/devmetrics`);
+
+// ── Add Department ────────────────────────────────────────────────────────────
+export async function addDepartment(companyId: string, department: string) {
+  const res = await fetch(`${BASE}/company/add-department?company_id=${companyId}&department=${encodeURIComponent(department)}`, {
+    method: "POST",
   });
   return res.json();
 }

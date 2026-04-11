@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Shield, Users, DollarSign, Cog, Target, Briefcase, ChevronRight, Check } from "lucide-react";
+import { Shield, Users, DollarSign, Cog, Target, Briefcase, ChevronRight, Check, Code2 } from "lucide-react";
 
 const DEPARTMENTS = [
   { id: "hr", name: "HR", icon: Users, color: "text-purple-400", border: "border-purple-500", bg: "bg-purple-500/10" },
   { id: "finance", name: "Finance", icon: DollarSign, color: "text-teal-400", border: "border-teal-500", bg: "bg-teal-500/10" },
+  { id: "software", name: "Software", icon: Code2, color: "text-orange-400", border: "border-orange-500", bg: "bg-orange-500/10" },
   { id: "engineering", name: "Engineering", icon: Cog, color: "text-amber-400", border: "border-amber-500", bg: "bg-amber-500/10" },
   { id: "operations", name: "Operations", icon: Target, color: "text-rose-400", border: "border-rose-500", bg: "bg-rose-500/10" },
   { id: "security", name: "Security", icon: Shield, color: "text-blue-400", border: "border-blue-500", bg: "bg-blue-500/10" },

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Users, Building2, TrendingUp, Shield, BarChart, Plus, Mail } from "lucide-react";
+import { Users, Building2, TrendingUp, Shield, BarChart, Plus, Mail, Network, Code2, ChevronRight } from "lucide-react";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
 export default function AdminPage() {
@@ -15,6 +15,7 @@ export default function AdminPage() {
 
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteDept, setInviteDept] = useState("hr");
+  const [inviteRole, setInviteRole] = useState("team_leader");
 
   useEffect(() => {
     const compId = localStorage.getItem("company_id");
@@ -61,11 +62,13 @@ export default function AdminPage() {
         body: JSON.stringify({
           company_id: compId,
           department: inviteDept,
-          email: inviteEmail
+          email: inviteEmail,
+          role: inviteRole,
         })
       });
       if (res.ok) {
-        alert("Invite sent!");
+        const data = await res.json();
+        alert(`Invite sent! Token: ${data.invite_token}`);
         setInviteEmail("");
       } else {
         alert("Failed to send invite.");
@@ -76,7 +79,14 @@ export default function AdminPage() {
   };
 
   if (loading) {
-     return <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center text-slate-400">Loading Admin Dashboard...</div>;
+     return (
+       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center text-slate-400">
+         <div className="flex flex-col items-center gap-3">
+           <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+           <span>Loading Admin Dashboard...</span>
+         </div>
+       </div>
+     );
   }
 
   const overallRisk = deptRisks.length > 0 
@@ -88,6 +98,12 @@ export default function AdminPage() {
     score: d.risk_pct
   }));
 
+  const roleCount = {
+    admin: members.filter(m => m.role === "admin").length,
+    leaders: members.filter(m => m.role === "team_leader").length,
+    employees: members.filter(m => m.role === "employee").length,
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-slate-200">
       
@@ -96,40 +112,63 @@ export default function AdminPage() {
         <div className="flex items-center gap-3">
           <Building2 className="text-indigo-400 w-5 h-5" />
           <span className="font-semibold text-white">Company Admin</span>
+          <span className="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20 font-bold">ADMIN</span>
         </div>
-        <Link href="/select-department" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-          Go to Workspaces →
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/admin/org-tree" className="flex items-center gap-2 px-4 py-2 bg-[#13131f] border border-[#1e2035] hover:border-indigo-500/30 text-sm font-medium text-slate-300 hover:text-white rounded-lg transition-all">
+            <Network className="w-4 h-4 text-indigo-400" />
+            View Org Tree
+          </Link>
+          <Link href="/select-department" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            Go to Workspaces →
+          </Link>
+        </div>
       </nav>
 
       <main className="max-w-7xl mx-auto px-8 py-10">
         
         {/* Global Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
           <div className="bg-[#13131f] border border-[#1e2035] rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl rounded-full" />
-            <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-2">Overall Risk Score</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">Overall Risk Score</p>
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-black text-white">{overallRisk.toFixed(1)}%</span>
-              <span className={`text-sm font-medium mb-1.5 ${overallRisk > 50 ? 'text-red-400' : 'text-green-400'}`}>Avg. active state</span>
+              <span className="text-4xl font-black text-white">{overallRisk.toFixed(1)}%</span>
+              <span className={`text-xs font-medium mb-1 ${overallRisk > 50 ? 'text-red-400' : 'text-green-400'}`}>Avg. across depts</span>
             </div>
           </div>
           
           <div className="bg-[#13131f] border border-[#1e2035] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Active Departments</p>
-              <BarChart className="text-slate-500 w-4 h-4" />
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Departments</p>
+              <BarChart className="text-slate-600 w-4 h-4" />
             </div>
              <span className="text-4xl font-bold text-white">{departments.length}</span>
           </div>
 
           <div className="bg-[#13131f] border border-[#1e2035] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Total Members</p>
-              <Users className="text-slate-500 w-4 h-4" />
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Total Team</p>
+              <Users className="text-slate-600 w-4 h-4" />
             </div>
              <span className="text-4xl font-bold text-white">{members.length}</span>
+             <div className="flex gap-3 mt-2 text-[10px]">
+               <span className="text-indigo-400">{roleCount.admin} admin</span>
+               <span className="text-teal-400">{roleCount.leaders} leaders</span>
+               <span className="text-slate-500">{roleCount.employees} employees</span>
+             </div>
           </div>
+
+          <Link href="/admin/org-tree" className="bg-gradient-to-br from-indigo-600/10 to-violet-600/10 border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all group flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Org Tree</p>
+              <Network className="text-indigo-400 w-4 h-4" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-indigo-400 group-hover:text-indigo-300">View hierarchy</span>
+              <ChevronRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
         </div>
 
         {/* Charts & Grid */}
@@ -165,7 +204,7 @@ export default function AdminPage() {
               </div>
               <div className="divide-y divide-[#1e2035]">
                  {deptRisks.map(d => (
-                    <div key={d.department} className="p-4 flex items-center justify-between hover:bg-[#1e2035]/50 transition-colors">
+                    <Link key={d.department} href={`/dashboard/${d.department}`} className="p-4 flex items-center justify-between hover:bg-[#1e2035]/50 transition-colors block">
                        <span className="capitalize font-medium text-slate-200">{d.department}</span>
                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${
                          d.color === "red" ? "bg-red-500/10 text-red-500" :
@@ -174,7 +213,7 @@ export default function AdminPage() {
                        }`}>
                          {d.risk_pct}%
                        </span>
-                    </div>
+                    </Link>
                  ))}
                  {deptRisks.length === 0 && <div className="p-4 text-slate-500">No departments initialized.</div>}
               </div>
@@ -195,25 +234,30 @@ export default function AdminPage() {
                          <th className="font-semibold pb-3">Email</th>
                          <th className="font-semibold pb-3">Role</th>
                          <th className="font-semibold pb-3">Department</th>
-                         <th className="font-semibold pb-3">Action</th>
                        </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1e2035]">
                        {members.map((m, i) => (
                           <tr key={i} className="hover:bg-[#1e2035]/30">
-                             <td className="py-4 pl-2 font-medium text-white">{m.name}</td>
+                             <td className="py-4 pl-2 font-medium text-white">
+                               <div className="flex items-center gap-2.5">
+                                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-bold text-white">
+                                   {m.name.charAt(0).toUpperCase()}
+                                 </div>
+                                 {m.name}
+                               </div>
+                             </td>
                              <td className="py-4 text-slate-400">{m.email}</td>
                              <td className="py-4">
-                                <span className="bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded-md capitalize text-xs">
+                                <span className={`px-2 py-1 rounded-md capitalize text-xs font-semibold ${
+                                  m.role === "admin" ? "bg-indigo-500/10 text-indigo-400" :
+                                  m.role === "team_leader" ? "bg-teal-500/10 text-teal-400" :
+                                  "bg-slate-500/10 text-slate-400"
+                                }`}>
                                    {m.role.replace("_", " ")}
                                 </span>
                              </td>
                              <td className="py-4 capitalize text-slate-300">{m.department}</td>
-                             <td className="py-4">
-                                {m.role !== "admin" && (
-                                   <button className="text-red-400 hover:text-red-500 text-xs font-semibold">Remove</button>
-                                )}
-                             </td>
                           </tr>
                        ))}
                     </tbody>
@@ -234,10 +278,21 @@ export default function AdminPage() {
                      <input 
                         type="email" required
                         className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-2 px-3 text-sm focus:ring-1 focus:ring-indigo-500 outline-none"
-                        placeholder="leader@acme.com"
+                        placeholder="member@acme.com"
                         value={inviteEmail}
                         onChange={e => setInviteEmail(e.target.value)}
                      />
+                  </div>
+                  <div className="space-y-1">
+                     <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Role</label>
+                     <select 
+                        className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-2 px-3 text-sm focus:ring-1 focus:ring-indigo-500 outline-none appearance-none"
+                        value={inviteRole}
+                        onChange={e => setInviteRole(e.target.value)}
+                     >
+                        <option value="team_leader">Team Leader</option>
+                        <option value="employee">Employee</option>
+                     </select>
                   </div>
                   <div className="space-y-1">
                      <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Department</label>
@@ -246,12 +301,9 @@ export default function AdminPage() {
                         value={inviteDept}
                         onChange={e => setInviteDept(e.target.value)}
                      >
-                        <option value="hr">HR</option>
-                        <option value="finance">Finance</option>
-                        <option value="engineering">Engineering</option>
-                        <option value="operations">Operations</option>
-                        <option value="security">Security</option>
-                        <option value="marketing">Marketing</option>
+                        {departments.map(d => (
+                          <option key={d.name} value={d.name.toLowerCase()}>{d.name}</option>
+                        ))}
                      </select>
                   </div>
                   <button type="submit" className="w-full py-2.5 mt-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition-colors flex items-center justify-center gap-2">

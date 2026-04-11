@@ -185,6 +185,58 @@
         "lead_time_days": 14.0,
         "mttr_hours": 24.0
       }
+    },
+    "e5c40eb1-ce8a-4e0a-a7e0-70f372122a9b": {
+      "name": "Acme Corp",
+      "industry": "Technology",
+      "size": "1-10",
+      "admin_email": "admin@acme.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance",
+        "software"
+      ],
+      "members": [
+        {
+          "email": "admin@acme.com",
+          "name": "Admin Demo",
+          "password": "password123",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "software": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
     }
   },
   "invites": {
