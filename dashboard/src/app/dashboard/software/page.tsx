@@ -17,8 +17,8 @@ export default function SoftwareDashboard() {
     if (!compId) { router.push("/"); return; }
 
     Promise.all([
-      fetch(`http://localhost:8002/department/${compId}/software/devmetrics`).then(r => r.json()),
-      fetch(`http://localhost:8002/department/${compId}/software/risk`).then(r => r.json()),
+      fetch(`http://localhost:8000/department/${compId}/software/devmetrics`).then(r => r.json()),
+      fetch(`http://localhost:8000/department/${compId}/software/risk`).then(r => r.json()),
     ]).then(([dm, rd]) => {
       setDevMetrics(dm);
       setRiskData(rd);

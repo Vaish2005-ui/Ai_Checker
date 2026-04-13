@@ -64,9 +64,9 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
     }
 
     Promise.all([
-      fetch(`http://localhost:8002/department/${compId}/${department}/risk`).then(res => res.json()),
-      fetch(`http://localhost:8002/company/members?company_id=${compId}`).then(res => res.json()),
-      fetch(`http://localhost:8002/department/${compId}/${department}/board`).then(res => res.json()),
+      fetch(`http://localhost:8000/department/${compId}/${department}/risk`).then(res => res.json()),
+      fetch(`http://localhost:8000/company/members?company_id=${compId}`).then(res => res.json()),
+      fetch(`http://localhost:8000/department/${compId}/${department}/board`).then(res => res.json()),
     ]).then(([riskData, allMembers, boardData]) => {
       setData(riskData);
       setLocalMetrics(riskData.metrics || {});
@@ -87,12 +87,12 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
     setSaving(true);
     const compId = localStorage.getItem("company_id");
     try {
-      await fetch("http://localhost:8002/department/update-metrics", {
+      await fetch("http://localhost:8000/department/update-metrics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ company_id: compId, department, metrics: localMetrics })
       });
-      const newRiskData = await fetch(`http://localhost:8002/department/${compId}/${department}/risk`).then(res => res.json());
+      const newRiskData = await fetch(`http://localhost:8000/department/${compId}/${department}/risk`).then(res => res.json());
       setData(newRiskData);
       setActiveTab("Risk Overview");
     } catch (e) {
@@ -105,7 +105,7 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
     e.preventDefault();
     const compId = localStorage.getItem("company_id");
     try {
-      const res = await fetch(`http://localhost:8002/department/${compId}/${department}/board/task`, {
+      const res = await fetch(`http://localhost:8000/department/${compId}/${department}/board/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTask),
@@ -122,7 +122,7 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
   const moveTask = async (taskId: string, newStatus: string) => {
     const compId = localStorage.getItem("company_id");
     try {
-      await fetch(`http://localhost:8002/department/${compId}/${department}/board/task/${taskId}`, {
+      await fetch(`http://localhost:8000/department/${compId}/${department}/board/task/${taskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -134,7 +134,7 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
   const removeTask = async (taskId: string) => {
     const compId = localStorage.getItem("company_id");
     try {
-      await fetch(`http://localhost:8002/department/${compId}/${department}/board/task/${taskId}`, { method: "DELETE" });
+      await fetch(`http://localhost:8000/department/${compId}/${department}/board/task/${taskId}`, { method: "DELETE" });
       setTasks(tasks.filter(t => t.id !== taskId));
     } catch (e) { console.error(e); }
   };
@@ -143,7 +143,7 @@ export default function DepartmentDashboard({ params }: { params: Promise<{ depa
     e.preventDefault();
     const compId = localStorage.getItem("company_id");
     try {
-      const res = await fetch("http://localhost:8002/company/invite", {
+      const res = await fetch("http://localhost:8000/company/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ company_id: compId, department, email: inviteEmail, role: "employee" }),

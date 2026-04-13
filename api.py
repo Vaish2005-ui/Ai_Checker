@@ -3,17 +3,14 @@ api.py — FastAPI backend (v3 — Jira-like department system)
 Run: uvicorn api:app --reload --port 8000
 """
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import sys, os
-import json
-from uuid import uuid4
-from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
+import sys, os
+import json
+from uuid import uuid4
+from typing import List, Optional, Dict, Any
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from simulation import SimulationEngine
@@ -258,8 +255,9 @@ def create_company(req: CompanyCreate):
                 
     company_id = str(uuid4())
     
-    # Ensure software dept is available
-    depts = req.departments if req.departments else ["HR", "finance", "software"]
+    # Ensure software dept is available — normalize to lowercase and deduplicate
+    depts_raw = [d.lower() for d in req.departments] if req.departments else ["hr", "finance", "software"]
+    depts = list(dict.fromkeys(depts_raw))  # preserve order, remove dupes
     
     db["companies"][company_id] = {
         "name": req.name,
@@ -389,8 +387,12 @@ def get_departments(company_id: str):
     if not comp: raise HTTPException(status_code=404, detail="Company not found")
     
     res = []
+    seen = set()
     for d in comp.get("departments", []):
         dept_key = d.lower()
+        if dept_key in seen:
+            continue
+        seen.add(dept_key)
         dept_info = DEPT_METRICS.get(dept_key, {"label": d, "metrics": [], "color": "#6366f1"})
         member_count = len([m for m in comp.get("members", []) if m["department"].lower() == dept_key or m["department"] == "all"])
         res.append({
@@ -402,6 +404,13 @@ def get_departments(company_id: str):
             "member_count": member_count,
         })
     return res
+
+@app.get("/company/info")
+def get_company_info(company_id: str):
+    db = load_db()
+    comp = db["companies"].get(company_id)
+    if not comp: raise HTTPException(status_code=404, detail="Company not found")
+    return {"name": comp.get("name", ""), "industry": comp.get("industry", ""), "size": comp.get("size", "")}
 
 @app.get("/company/profile")
 def get_company_profile(company_id: str):
@@ -464,8 +473,12 @@ def get_org_tree(company_id: str):
         "departments": []
     }
     
+    seen = set()
     for d in departments:
         dk = d.lower()
+        if dk in seen:
+            continue
+        seen.add(dk)
         dept_info = DEPT_METRICS.get(dk, {"label": d, "color": "#6366f1"})
         members_data = dept_tree.get(dk, {"leaders": [], "employees": []})
         tree["departments"].append({
@@ -495,12 +508,12 @@ def update_metrics(req: DepartmentUpdate):
     if req.company_id not in db["companies"]:
         raise HTTPException(status_code=404, detail="Company not found")
     
-    if req.department not in db["companies"][req.company_id].get("department_metrics", {}):
-        db["companies"][req.company_id].setdefault("department_metrics", {})[req.department] = {}
+    if req.department.lower() not in db["companies"][req.company_id].get("department_metrics", {}):
+        db["companies"][req.company_id].setdefault("department_metrics", {})[req.department.lower()] = {}
         
-    db["companies"][req.company_id]["department_metrics"][req.department].update(req.metrics)
+    db["companies"][req.company_id]["department_metrics"][req.department.lower()].update(req.metrics)
     # Ensure department is in list
-    if req.department not in db["companies"][req.company_id]["departments"]:
+    if req.department.lower() not in [d.lower() for d in db["companies"][req.company_id]["departments"]]:
         db["companies"][req.company_id]["departments"].append(req.department)
         
     save_db(db)
@@ -512,7 +525,7 @@ def get_department_risk(company_id: str, dept: str):
     comp = db["companies"].get(company_id)
     if not comp: raise HTTPException(status_code=404, detail="Company not found")
     
-    metrics = comp.get("department_metrics", {}).get(dept, {})
+    metrics = comp.get("department_metrics", {}).get(dept.lower(), {})
     global_metrics = comp.get("global_metrics", {})
     
     # Start with default profile

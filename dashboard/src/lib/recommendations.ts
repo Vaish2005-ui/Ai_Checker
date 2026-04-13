@@ -162,6 +162,10 @@ const ADVICE: Record<keyof Profile, AdviceEntry> = {
   how_much_they_raised: { title: "", description: "", category: "Financial", threshold: 999, featureLabel: "Funding" },
   week: { title: "", description: "", category: "Market", threshold: 999, featureLabel: "Week" },
   sector: { title: "", description: "", category: "Market", threshold: 999, featureLabel: "Sector" } as any,
+  change_failure_rate: { title: "", description: "", category: "Technical", threshold: 999, featureLabel: "Change Failure Rate" },
+  deployment_frequency: { title: "", description: "", category: "Technical", threshold: 999, featureLabel: "Deployment Frequency" },
+  lead_time_days: { title: "", description: "", category: "Technical", threshold: 999, featureLabel: "Lead Time" },
+  mttr_hours: { title: "", description: "", category: "Technical", threshold: 999, featureLabel: "MTTR" },
 };
 
 /* ── Build recommendations for a profile ────────────────────────────────────── */

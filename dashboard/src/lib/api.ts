@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export interface Profile {
   years_of_operation: number;
@@ -18,6 +18,10 @@ export interface Profile {
   overhype: number;
   security_risk: number;
   tech_debt: number;
+  change_failure_rate: number;
+  deployment_frequency: number;
+  lead_time_days: number;
+  mttr_hours: number;
   week: number;
   sector: string;
 }
@@ -40,6 +44,10 @@ export const DEFAULT_PROFILE: Profile = {
   overhype: 0.1,
   security_risk: 0.2,
   tech_debt: 0.2,
+  change_failure_rate: 0.1,
+  deployment_frequency: 0.5,
+  lead_time_days: 14.0,
+  mttr_hours: 24.0,
   week: 1,
   sector: "Technology",
 };

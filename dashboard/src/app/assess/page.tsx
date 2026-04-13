@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 /* ── Jira-inspired Dark Theme Tokens ─────────────────────────────────────── */
@@ -116,6 +116,7 @@ export default function AssessPage() {
   const [submitting, setSubmitting] = useState(false);
   const [testDoraStatus, setTestDoraStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [doraResult, setDoraResult] = useState<any>(null);
+  const [companyId, setCompanyId] = useState<string | null>(null);
 
   const [data, setData] = useState<IntakeData>({
     company_name: "",
@@ -136,6 +137,22 @@ export default function AssessPage() {
     github_repo: "",
     github_token: "",
   });
+
+  /* ── Load company info if coming from onboarding flow ──────────────────── */
+  useEffect(() => {
+    const cid = localStorage.getItem("company_id");
+    if (cid) {
+      setCompanyId(cid);
+      fetch(`http://localhost:8000/company/info?company_id=${cid}`)
+        .then(res => res.json())
+        .then(info => {
+          if (info.name) {
+            setData(prev => ({ ...prev, company_name: info.name }));
+          }
+        })
+        .catch(console.error);
+    }
+  }, []);
 
   /* ── Fetch ──────────────────────────────────────────────────────────────── */
   const testGitHub = async () => {
@@ -199,14 +216,56 @@ export default function AssessPage() {
         sector: data.sector,
       };
 
-      const res = await fetch("http://localhost:8002/full_report", {
+      // ── If part of the company onboarding flow, save metrics to company profile ──
+      if (companyId) {
+        const globalMetrics: Record<string, number> = {
+          "Years of Operation": payload.years_of_operation,
+          "How Much They Raised": payload.how_much_they_raised,
+          "Giants": payload.giants,
+          "No Budget": payload.no_budget,
+          "Competition": payload.competition,
+          "Poor Market Fit": payload.poor_market_fit,
+          "Acquisition Stagnation": payload.acquisition_stagnation,
+          "Platform Dependency": payload.platform_dependency,
+          "Monetization Failure": payload.monetization_failure,
+          "Niche Limits": payload.niche_limits,
+          "Execution Flaws": payload.execution_flaws,
+          "Trend Shifts": payload.trend_shifts,
+          "Toxicity/Trust Issues": payload.toxicity_trust_issues,
+          "Regulatory Pressure": payload.regulatory_pressure,
+          "Overhype": payload.overhype,
+          "Security Risk": payload.security_risk,
+          "Tech Debt": payload.tech_debt,
+          "change_failure_rate": 0.1,
+          "deployment_frequency": 0.5,
+          "lead_time_days": 14.0,
+          "mttr_hours": 24.0,
+        };
+
+        // If DORA results were fetched, override those metrics
+        if (doraResult) {
+          globalMetrics["deployment_frequency"] = doraResult.dora.deployment_frequency.value;
+          globalMetrics["lead_time_days"] = doraResult.dora.lead_time.value;
+          globalMetrics["change_failure_rate"] = doraResult.dora.change_failure_rate.value / 100;
+          globalMetrics["mttr_hours"] = doraResult.dora.mttr.value;
+        }
+
+        await fetch(`http://localhost:8000/company/profile?company_id=${companyId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(globalMetrics),
+        });
+      }
+
+      // ── Generate full report ────────────────────────────────────────────────
+      const res = await fetch("http://localhost:8000/full_report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
       
       if (!res.ok) {
-        throw new Error(`Backend returned $res.status: make sure uvicorn is running!`);
+        throw new Error(`Backend returned ${res.status}: make sure uvicorn is running!`);
       }
       
       const result = await res.json();
@@ -225,7 +284,15 @@ export default function AssessPage() {
       };
 
       localStorage.setItem("startupReportData", JSON.stringify(finalReport));
-      router.push("/report");
+
+      // ── Route based on onboarding vs standalone ─────────────────────────────
+      if (companyId) {
+        // Part of company onboarding — go to the dashboard
+        router.push("/dashboard");
+      } else {
+        // Standalone assessment — go to report
+        router.push("/report");
+      }
     } catch (err) {
       console.error(err);
       alert("Failed to generate report. Make sure the FastAPI backend is running.");
@@ -261,7 +328,9 @@ export default function AssessPage() {
             Risk Check
           </span>
           <span style={{ color: C.text }} className="text-sm px-2">/</span>
-          <span style={{ color: C.text }} className="text-sm font-medium">New Assessment</span>
+          <span style={{ color: C.text }} className="text-sm font-medium">
+            {companyId ? "Company Assessment" : "New Assessment"}
+          </span>
         </div>
       </div>
 
@@ -269,10 +338,17 @@ export default function AssessPage() {
         
         {/* ── Header ──────────────────────────────────────────────────────── */}
         <div className="mb-6 flex justify-between items-center">
-          <h1 style={{ color: C.textMain }} className="text-2xl font-medium tracking-tight">Create Risk Assessment</h1>
+          <div>
+            <h1 style={{ color: C.textMain }} className="text-2xl font-medium tracking-tight">Create Risk Assessment</h1>
+            {companyId && (
+              <p style={{ color: C.text }} className="text-sm mt-1">
+                Configure your company&apos;s baseline risk parameters. These will be used across all departments.
+              </p>
+            )}
+          </div>
           <div className="flex gap-2">
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.back()}
               style={{ color: C.text, background: "transparent" }}
               className="px-3 py-1.5 rounded hover:bg-[#2C333A] text-sm font-medium transition-colors"
             >
@@ -283,7 +359,7 @@ export default function AssessPage() {
               style={{ background: C.blue, color: C.bg }}
               className="px-4 py-1.5 rounded text-sm font-medium hover:bg-[#85B8FF] transition-colors"
             >
-              Create
+              {companyId ? "Save & Continue to Dashboard" : "Create"}
             </button>
           </div>
         </div>
@@ -452,7 +528,7 @@ export default function AssessPage() {
               <button
                 onClick={testGitHub}
                 disabled={!data.github_repo || !data.github_token || testDoraStatus === "loading"}
-                style={{ background: "#2C333A", color: C.textMain, border: `1px solid ${C.border}` }}
+                style={{ background: "rgb(44 51 58)", color: C.textMain, border: `1px solid ${C.border}` }}
                 className="w-full py-1 rounded text-sm font-medium hover:bg-[#38414A] disabled:opacity-50 mt-2"
               >
                 {testDoraStatus === "loading" ? "Fetching..." : "Test Connection"}
@@ -471,6 +547,41 @@ export default function AssessPage() {
                 </div>
               )}
             </div>
+
+            {/* ── Onboarding Progress Hint ──────────────────────────────────── */}
+            {companyId && (
+              <div style={{ border: `1px solid ${C.border}`, borderRadius: 3 }} className="p-4 mt-6">
+                <h3 style={{ color: C.text }} className="text-[12px] font-bold uppercase tracking-wider mb-3">
+                  Onboarding Progress
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <span className="text-green-400 text-xs">✓</span>
+                    </div>
+                    <span style={{ color: C.text }} className="text-xs">Company registered</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <span className="text-green-400 text-xs">✓</span>
+                    </div>
+                    <span style={{ color: C.text }} className="text-xs">Departments configured</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <span className="text-blue-400 text-xs font-bold">3</span>
+                    </div>
+                    <span style={{ color: C.textMain }} className="text-xs font-medium">Risk assessment (current)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-[#38414A] flex items-center justify-center">
+                      <span style={{ color: C.text }} className="text-xs">4</span>
+                    </div>
+                    <span style={{ color: C.text }} className="text-xs">Dashboard</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
           </div>
 
