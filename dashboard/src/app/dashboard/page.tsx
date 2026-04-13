@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   predict, getImpact, getTimeline, simulate,
   DEFAULT_PROFILE, Profile
@@ -130,6 +131,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 // ── Main page ────────────────────────────────────────────────────────────────
 export default function Home() {
+  const router = useRouter();
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
   const [startupName, setStartupName] = useState("My Tech Startup");
   const [tab, setTab] = useState(0);
@@ -161,6 +163,16 @@ export default function Home() {
   }, [profile]);
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  useEffect(() => {
+    const compId = localStorage.getItem("company_id");
+    if (compId) {
+      fetch(`http://localhost:8000/company/info?company_id=${compId}`)
+        .then(res => res.json())
+        .then(data => { if (data.name) setStartupName(data.name); })
+        .catch(console.error);
+    }
+  }, []);
 
   const runSim = async () => {
     const res = await simulate(profile, simFeature, simValue);

@@ -46,6 +46,10 @@ FEATURE_META = {
     "Overhype":              {"label": "Overhype risk",              "min": 0,    "max": 2,    "step": 0.05},
     "Security Risk":         {"label": "Security vulnerability risk","min": 0,    "max": 2,    "step": 0.05},
     "Tech Debt":             {"label": "Technical debt level",       "min": 0,    "max": 2,    "step": 0.05},
+    "change_failure_rate":   {"label": "Change failure rate",        "min": 0,    "max": 1,    "step": 0.01},
+    "deployment_frequency":  {"label": "Deployment frequency",       "min": 0,    "max": 10,   "step": 0.1},
+    "lead_time_days":        {"label": "Lead time (days)",           "min": 0,    "max": 100,  "step": 1},
+    "mttr_hours":            {"label": "MTTR (hours)",               "min": 0,    "max": 500,  "step": 1},
     "week":                  {"label": "Monitoring week",            "min": 1,    "max": 12,   "step": 1},
 }
 
@@ -67,6 +71,10 @@ DEFAULT_PROFILE = {
     "Overhype":               0.1,
     "Security Risk":          0.2,
     "Tech Debt":              0.2,
+    "change_failure_rate":    0.1,
+    "deployment_frequency":   0.5,
+    "lead_time_days":         14.0,
+    "mttr_hours":             24.0,
     "week":                   1,
     "Sector":                 "Technology",
 }

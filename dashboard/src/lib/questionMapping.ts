@@ -324,6 +324,10 @@ export function mapAnswersToProfile(
     overhype: 0.1,
     security_risk: 0.2,
     tech_debt: 0.2,
+    change_failure_rate: 0.1,
+    deployment_frequency: 0.5,
+    lead_time_days: 14.0,
+    mttr_hours: 24.0,
     week: 1,
     sector,
   };

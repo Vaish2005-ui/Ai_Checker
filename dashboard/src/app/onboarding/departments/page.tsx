@@ -74,7 +74,7 @@ export default function DepartmentSetup() {
           });
       }
 
-      router.push("/admin/profile");
+      router.push("/assess");
     } catch (e) {
       console.error(e);
       alert("Failed to save and invite.");
