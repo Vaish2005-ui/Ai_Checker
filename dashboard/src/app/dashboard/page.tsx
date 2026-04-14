@@ -13,28 +13,28 @@ import {
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg:       "#F7F9FB",
-  surface:  "#ffffff",
-  card:     "#ffffff",
-  border:   "#e2e8f0",
-  border2:  "#cbd5e1",
-  muted:    "#64748b",
-  text:     "#1e293b",
-  textDim:  "#475569",
-  indigo:   "#6366f1",
-  violet:   "#8b5cf6",
-  red:      "#ef4444",
-  amber:    "#f59e0b",
-  green:    "#22c55e",
-  pink:     "#ec4899",
-  cyan:     "#06b6d4",
+  bg: "#F7F9FB",
+  surface: "#ffffff",
+  card: "#ffffff",
+  border: "#e2e8f0",
+  border2: "#cbd5e1",
+  muted: "#64748b",
+  text: "#1e293b",
+  textDim: "#475569",
+  indigo: "#6366f1",
+  violet: "#8b5cf6",
+  red: "#ef4444",
+  amber: "#f59e0b",
+  green: "#22c55e",
+  pink: "#ec4899",
+  cyan: "#06b6d4",
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function riskColor(pct: number) {
-  if (pct >= 70) return { hex: C.red,   label: "Critical", badge: "bg-red-500/20 text-red-400 border-red-500/30" };
-  if (pct >= 40) return { hex: C.amber, label: "High",     badge: "bg-amber-500/20 text-amber-400 border-amber-500/30" };
-  return              { hex: C.green, label: "Low",      badge: "bg-green-500/20 text-green-400 border-green-500/30" };
+  if (pct >= 70) return { hex: C.red, label: "Critical", badge: "bg-red-500/20 text-red-400 border-red-500/30" };
+  if (pct >= 40) return { hex: C.amber, label: "High", badge: "bg-amber-500/20 text-amber-400 border-amber-500/30" };
+  return { hex: C.green, label: "Low", badge: "bg-green-500/20 text-green-400 border-green-500/30" };
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -62,7 +62,7 @@ function Topbar({ name, pct, label, badge }: { name: string; pct: number; label:
           </div>
         ))}
         <div className="flex items-center gap-1.5 ml-2">
-          {["●","●","○","○"].map((d, i) => (
+          {["●", "●", "○", "○"].map((d, i) => (
             <span key={i} style={{ color: i < 2 ? C.green : C.border2 }} className="text-[10px]">{d}</span>
           ))}
         </div>
@@ -180,8 +180,8 @@ export default function Home() {
     setSimResult(res);
   };
 
-  const pct   = riskData?.risk_pct ?? 71;
-  const rc    = riskColor(pct);
+  const pct = riskData?.risk_pct ?? 71;
+  const rc = riskColor(pct);
   const label = riskData?.label ?? "Critical";
 
   const topRisks = impactData?.risks?.slice(0, 5).map((d: any) => ({
@@ -195,12 +195,12 @@ export default function Home() {
   })) ?? [];
 
   const logEntries = [
-    { time: "now",   level: "CRITICAL", msg: `Failure risk at ${pct}% — ${label}` },
-    { time: "-1m",   level: "HIGH",     msg: `Competition score: ${profile.competition.toFixed(2)}` },
-    { time: "-3m",   level: "HIGH",     msg: `Platform dependency: ${profile.platform_dependency.toFixed(2)}` },
-    { time: "-5m",   level: "MEDIUM",   msg: `Giants pressure: ${profile.giants.toFixed(2)}` },
-    { time: "-8m",   level: "INFO",     msg: `Market fit score: ${(1 - profile.poor_market_fit).toFixed(2)}` },
-    { time: "-12m",  level: "INFO",     msg: `Funding: $${profile.how_much_they_raised}M raised` },
+    { time: "now", level: "CRITICAL", msg: `Failure risk at ${pct}% — ${label}` },
+    { time: "-1m", level: "HIGH", msg: `Competition score: ${profile.competition.toFixed(2)}` },
+    { time: "-3m", level: "HIGH", msg: `Platform dependency: ${profile.platform_dependency.toFixed(2)}` },
+    { time: "-5m", level: "MEDIUM", msg: `Giants pressure: ${profile.giants.toFixed(2)}` },
+    { time: "-8m", level: "INFO", msg: `Market fit score: ${(1 - profile.poor_market_fit).toFixed(2)}` },
+    { time: "-12m", level: "INFO", msg: `Funding: $${profile.how_much_they_raised}M raised` },
   ];
 
   const logColor = (l: string) =>
@@ -349,7 +349,7 @@ export default function Home() {
                     { label: "Minimum", val: timelineData.length ? `${Math.min(...timelineData.map(d => d.risk)).toFixed(1)}%` : "—" },
                     { label: "Maximum", val: timelineData.length ? `${Math.max(...timelineData.map(d => d.risk)).toFixed(1)}%` : "—" },
                     { label: "Average", val: timelineData.length ? `${(timelineData.reduce((a, d) => a + d.risk, 0) / timelineData.length).toFixed(1)}%` : "—" },
-                    { label: "Median",  val: timelineData.length ? `${timelineData[Math.floor(timelineData.length / 2)]?.risk.toFixed(1)}%` : "—" },
+                    { label: "Median", val: timelineData.length ? `${timelineData[Math.floor(timelineData.length / 2)]?.risk.toFixed(1)}%` : "—" },
                   ].map((s, i) => (
                     <div key={i} className="flex justify-between items-center py-2" style={{ borderBottom: `1px solid ${C.border}` }}>
                       <span style={{ color: C.muted }} className="text-xs">{s.label}</span>
@@ -463,8 +463,10 @@ export default function Home() {
               <div style={{ background: C.card, border: `1px solid ${C.border}` }} className="rounded-xl p-5">
                 <div className="flex items-center gap-4 mb-4 text-xs border-b pb-3" style={{ borderColor: C.border }}>
                   {["Waterfall", "Attributes", "Profiles"].map((t, i) => (
-                    <button key={i} style={{ color: i === 0 ? C.indigo : C.muted,
-                      borderBottom: i === 0 ? `1px solid ${C.indigo}` : "none" }}
+                    <button key={i} style={{
+                      color: i === 0 ? C.indigo : C.muted,
+                      borderBottom: i === 0 ? `1px solid ${C.indigo}` : "none"
+                    }}
                       className="pb-1 font-medium">{t}</button>
                   ))}
                 </div>

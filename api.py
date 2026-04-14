@@ -23,6 +23,7 @@ logger = logging.getLogger("api")
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from simulation import SimulationEngine
 from preprocess import FEATURE_META, DEFAULT_PROFILE
+from sns_notifications import notify_login, notify_high_risk, notify_new_company, notify_department_change, notify_invite
 
 app = FastAPI(title="Startup Risk API v3 — Jira-like Departments")
 
@@ -396,6 +397,7 @@ def login(req: LoginRequest):
     if comp and member and verify_pw(req.password, member["password"]):
         logger.info("Login success: %s", email,
                     extra={"event": "login_success", "user_email": email, "company_id": comp.get("company_id")})
+        notify_login(email, success=True, company_id=comp.get("company_id", ""))
         return {
             "status": "success",
             "token": f"{comp.get('company_id')}:{email}",
@@ -406,6 +408,7 @@ def login(req: LoginRequest):
         }
     logger.warning("Login failed: %s", email,
                    extra={"event": "login_failed", "user_email": email})
+    notify_login(email, success=False)
     raise HTTPException(status_code=401, detail="Invalid email or password")
 
 @app.get("/auth/me")
@@ -487,6 +490,7 @@ def create_company(req: CompanyCreate):
         "created_at": datetime.now().isoformat()
     }
     save_company(comp)
+    notify_new_company(req.name, email, company_id)
     return {
         "status": "success",
         "company_id": company_id,
@@ -593,6 +597,7 @@ def add_department(company_id: str, department: str):
         comp.setdefault("department_metrics", {})[dk] = {}
         comp.setdefault("board", {})[dk] = []
         save_company(comp)
+        notify_department_change(company_id, dk, "added")
     return {"status": "success", "departments": comp["departments"]}
 
 @app.post("/company/remove-department")
@@ -603,6 +608,7 @@ def remove_department(company_id: str, department: str):
     dk = department.lower()
     comp["departments"] = [d for d in comp["departments"] if d.lower() != dk]
     save_company(comp)
+    notify_department_change(company_id, dk, "removed")
     return {"status": "success", "departments": comp["departments"]}
 
 @app.get("/company/profile")
@@ -736,10 +742,12 @@ def get_department_risk(company_id: str, dept: str):
     base.update(dept_m)
     risk = engine.predict_risk(base)
     relevant = DEPT_METRICS.get(dk, {}).get("metrics", [])
+    risk_pct = round(risk * 100, 1)
+    notify_high_risk(company_id, risk_pct, dept)
     return {
         "department": dept,
         "risk": risk,
-        "risk_pct": round(risk * 100, 1),
+        "risk_pct": risk_pct,
         "label": "Critical" if risk >= 0.7 else "Warning" if risk >= 0.4 else "Healthy",
         "color": "red" if risk >= 0.7 else "amber" if risk >= 0.4 else "green",
         "metrics": {k: dept_m.get(k, global_m.get(k, base.get(k, 0))) for k in relevant},
