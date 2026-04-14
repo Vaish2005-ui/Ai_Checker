@@ -44,23 +44,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] text-slate-200">
-      <div className="w-full max-w-md p-8 bg-[#13131f] border border-[#1e2035] rounded-3xl shadow-2xl relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#F7F9FB] text-slate-800">
+      <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-3xl shadow-xl relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-40 h-40 bg-indigo-500/15 blur-3xl rounded-full" />
         <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-violet-500/10 blur-3xl rounded-full" />
         
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center shadow-md">
               <Building2 className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">Sign In</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Sign In</h2>
               <p className="text-xs text-slate-500">StartupRisk.ai Dashboard</p>
             </div>
           </div>
           
-          <p className="text-slate-400 text-sm mt-4 mb-8">Access your department dashboard, board, and risk analytics.</p>
+          <p className="text-slate-500 text-sm mt-4 mb-8">Access your department dashboard, board, and risk analytics.</p>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-6 text-sm text-red-400">
@@ -70,12 +70,12 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-xs text-slate-400 uppercase tracking-wider font-bold">Email</label>
+              <label className="text-xs text-slate-500 uppercase tracking-wider font-bold">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
                   required type="email" autoFocus
-                  className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
                   placeholder="you@company.com"
                   value={form.email}
                   onChange={e => setForm({...form, email: e.target.value})}
@@ -84,12 +84,12 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs text-slate-400 uppercase tracking-wider font-bold">Password</label>
+              <label className="text-xs text-slate-500 uppercase tracking-wider font-bold">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
                   required type="password"
-                  className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
                   placeholder="••••••••"
                   value={form.password}
                   onChange={e => setForm({...form, password: e.target.value})}
@@ -107,13 +107,13 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-[#1e2035] text-center space-y-3">
+          <div className="mt-8 pt-6 border-t border-slate-100 text-center space-y-3">
             <p className="text-sm text-slate-500">Don&apos;t have an account?</p>
             <div className="flex gap-3">
-              <Link href="/register/company" className="flex-1 py-2.5 border border-[#1e2035] hover:border-indigo-500/30 text-sm font-medium text-slate-300 rounded-xl text-center transition-all hover:bg-[#1e2035]">
+              <Link href="/register/company" className="flex-1 py-2.5 border border-slate-200 hover:border-indigo-500/30 text-sm font-medium text-slate-700 rounded-xl text-center transition-all hover:bg-slate-50">
                 Create Company
               </Link>
-              <Link href="/join" className="flex-1 py-2.5 border border-[#1e2035] hover:border-indigo-500/30 text-sm font-medium text-slate-300 rounded-xl text-center transition-all hover:bg-[#1e2035]">
+              <Link href="/join" className="flex-1 py-2.5 border border-slate-200 hover:border-indigo-500/30 text-sm font-medium text-slate-700 rounded-xl text-center transition-all hover:bg-slate-50">
                 Join via Invite
               </Link>
             </div>

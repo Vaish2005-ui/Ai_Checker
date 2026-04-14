@@ -19,9 +19,11 @@ export default function SelectDepartment() {
   const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
     const compId = localStorage.getItem("company_id");
+    setRole(localStorage.getItem("role"));
     
     if (!compId) {
       router.push("/");
@@ -79,7 +81,7 @@ export default function SelectDepartment() {
           })}
         </div>
 
-        {localStorage.getItem("role") === "admin" && (
+        {role === "admin" && (
           <div className="mt-12 text-center">
             <Link href="/admin" className="text-indigo-600 hover:text-indigo-500 font-medium hover:underline">
               Or go to Global Admin Overview →

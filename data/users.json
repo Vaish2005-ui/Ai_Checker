@@ -586,6 +586,59 @@
         "lead_time_days": 14.0,
         "mttr_hours": 24.0
       }
+    },
+    "3a691645-92de-4906-85a8-2a49f9fe772e": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "jane@gmail.com",
+      "departments": [
+        "hr",
+        "finance",
+        "software",
+        "engineering"
+      ],
+      "members": [
+        {
+          "email": "jane@gmail.com",
+          "name": "jane",
+          "password": "jane",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "software": {},
+        "engineering": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 4.0,
+        "How Much They Raised": 0.0,
+        "Giants": 0.0,
+        "No Budget": 1.0,
+        "Competition": 2.0,
+        "Poor Market Fit": 0.0,
+        "Acquisition Stagnation": 0.0,
+        "Platform Dependency": 0.5,
+        "Monetization Failure": 1.0,
+        "Niche Limits": 0.3,
+        "Execution Flaws": 1.0,
+        "Trend Shifts": 0.2,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.0,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
     }
   },
   "invites": {
