@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, AlertCircle, Building, Info, BarChart } from "lucide-react";
 import AppNavbar from "@/components/AppNavbar";
+import { API_BASE } from "@/lib/config";
 
 export default function StartupProfilePage() {
   const router = useRouter();
@@ -20,12 +21,12 @@ export default function StartupProfilePage() {
       return;
     }
 
-    fetch(`http://localhost:8000/company/info?company_id=${compId}`)
+    fetch(`${API_BASE}/company/info?company_id=${compId}`)
       .then(res => res.json())
       .then(data => { if (data.name) setCompanyName(data.name); })
       .catch(console.error);
 
-    fetch(`http://localhost:8000/company/profile?company_id=${compId}`)
+    fetch(`${API_BASE}/company/profile?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         setMetrics(data);
@@ -39,7 +40,7 @@ export default function StartupProfilePage() {
     setSaving(true);
     const compId = localStorage.getItem("company_id");
     try {
-      await fetch(`http://localhost:8000/company/profile?company_id=${compId}`, {
+      await fetch(`${API_BASE}/company/profile?company_id=${compId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(metrics)
@@ -82,14 +83,14 @@ export default function StartupProfilePage() {
 
     try {
       // 1. Save changes first
-      await fetch(`http://localhost:8000/company/profile?company_id=${compId}`, {
+      await fetch(`${API_BASE}/company/profile?company_id=${compId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(metrics)
       });
 
       // 2. Generate full report
-      const res = await fetch("http://localhost:8000/full_report", {
+      const res = await fetch(`${API_BASE}/full_report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Building2, Search, Bell, LogOut } from "lucide-react";
+import { API_BASE } from "@/lib/config";
 
 export default function AppNavbar() {
   const router = useRouter();
@@ -22,12 +23,12 @@ export default function AppNavbar() {
     setRole(r);
     setUserName(n);
 
-    fetch(`http://localhost:8000/company/info?company_id=${compId}`)
+    fetch(`${API_BASE}/company/info?company_id=${compId}`)
       .then(res => res.json())
       .then(data => { if (data.name) setCompanyName(data.name); })
       .catch(console.error);
 
-    fetch(`http://localhost:8000/company/departments?company_id=${compId}`)
+    fetch(`${API_BASE}/company/departments?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         const d = localStorage.getItem("department");

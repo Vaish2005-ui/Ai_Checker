@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Shield, Users, DollarSign, Cog, Target, Briefcase, Activity } from "lucide-react";
 import AppNavbar from "@/components/AppNavbar";
+import { API_BASE } from "@/lib/config";
 
 const DEPT_ICONS: any = {
   hr: { icon: Users, color: "text-purple-600", border: "border-purple-300", bg: "bg-purple-100" },
@@ -30,7 +31,7 @@ export default function SelectDepartment() {
       return;
     }
 
-    fetch(`http://localhost:8000/company/departments?company_id=${compId}`)
+    fetch(`${API_BASE}/company/departments?company_id=${compId}`)
       .then(res => res.json())
       .then(data => {
         setDepartments(Array.isArray(data) ? data : []);

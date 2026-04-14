@@ -3,23 +3,76 @@ simulation.py
 -------------
 What-if analysis engine — fixed and complete.
 Wired to the actual model and feature names from your dataset.
+
+Models load from S3 first, with local filesystem fallback.
 """
 
 import pandas as pd
 import joblib
 import os
 import sys
+import logging
+import tempfile
 from copy import deepcopy
 
 sys.path.insert(0, os.path.dirname(__file__))
 from preprocess import load_and_prepare, prepare_single, FEATURE_META, DEFAULT_PROFILE
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "../models/rf_model.pkl")
+logger = logging.getLogger("simulation")
+
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
+MODEL_PATH = os.path.join(MODEL_DIR, "rf_model.pkl")
 DATA_PATH  = os.path.join(os.path.dirname(__file__), "../data/processed/merged_dataset.csv")
 
 
+def _download_from_s3(bucket: str, key: str, local_path: str) -> bool:
+    """Download a file from S3 to local_path. Returns True on success."""
+    try:
+        from aws_config import s3_client, S3_MODELS_BUCKET, USE_S3_MODELS
+        if not USE_S3_MODELS or s3_client is None:
+            return False
+        s3_client.download_file(bucket, key, local_path)
+        logger.info("Downloaded s3://%s/%s → %s", bucket, key, local_path)
+        return True
+    except Exception as e:
+        logger.debug("S3 download failed for %s/%s: %s", bucket, key, e)
+        return False
+
+
+def _load_model_file(filename: str):
+    """
+    Load a .pkl model file.
+    Priority: S3 cache → S3 download → local models/ directory.
+    """
+    # 1. Check local cache dir (from previous S3 download)
+    cache_dir = os.path.join(tempfile.gettempdir(), "ai_checker_models")
+    cached_path = os.path.join(cache_dir, filename)
+    if os.path.exists(cached_path):
+        logger.debug("Loading %s from cache: %s", filename, cached_path)
+        return joblib.load(cached_path)
+
+    # 2. Try downloading from S3
+    try:
+        from aws_config import S3_MODELS_BUCKET, USE_S3_MODELS
+        if USE_S3_MODELS:
+            os.makedirs(cache_dir, exist_ok=True)
+            if _download_from_s3(S3_MODELS_BUCKET, f"models/{filename}", cached_path):
+                logger.info("Loaded %s from S3 (cached locally)", filename)
+                return joblib.load(cached_path)
+    except ImportError:
+        pass
+
+    # 3. Fall back to local models/ directory
+    local_path = os.path.join(MODEL_DIR, filename)
+    if os.path.exists(local_path):
+        logger.info("Loaded %s from local: %s", filename, local_path)
+        return joblib.load(local_path)
+
+    raise FileNotFoundError(f"Model file '{filename}' not found in S3 or locally at {local_path}")
+
+
 class SimulationEngine:
-    """c
+    """
     Loads the trained Random Forest model and exposes:
       predict_risk(input_dict)
       simulate_change(input_dict, feature, new_value)
@@ -29,9 +82,10 @@ class SimulationEngine:
     """
 
     def __init__(self):
-        self.model = joblib.load(MODEL_PATH)
-        FEAT_PATH = os.path.join(os.path.dirname(MODEL_PATH), "feature_names.pkl")
-        self.feature_names = joblib.load(FEAT_PATH)
+        logger.info("Initializing SimulationEngine...")
+        self.model = _load_model_file("rf_model.pkl")
+        self.feature_names = _load_model_file("feature_names.pkl")
+        logger.info("SimulationEngine ready (%d features)", len(self.feature_names))
 
     def predict_risk(self, input_dict: dict) -> float:
         row = prepare_single(input_dict, self.feature_names)

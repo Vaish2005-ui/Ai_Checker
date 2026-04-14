@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, Users, DollarSign, Cog, Target, Briefcase, ChevronRight, Check, Code2 } from "lucide-react";
+import { API_BASE } from "@/lib/config";
 
 const DEPARTMENTS = [
   { id: "hr", name: "HR", icon: Users, color: "text-purple-400", border: "border-purple-500", bg: "bg-purple-500/10" },
@@ -49,7 +50,7 @@ export default function DepartmentSetup() {
       
       for (const deptId of activeIds) {
         if (invites[deptId]) {
-          await fetch("http://localhost:8000/company/invite", {
+          await fetch(`${API_BASE}/company/invite`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -63,7 +64,7 @@ export default function DepartmentSetup() {
       
       // Update the company's active departments (We'll use update-metrics dummy call to just register them)
       for (const deptId of activeIds) {
-        await fetch("http://localhost:8000/department/update-metrics", {
+        await fetch(`${API_BASE}/department/update-metrics`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Mail, User, Lock, Building, CheckCircle2 } from "lucide-react";
+import { API_BASE } from "@/lib/config";
 
 function JoinContent() {
   const router = useRouter();
@@ -19,7 +20,7 @@ function JoinContent() {
   useEffect(() => {
     if (!token) return;
     
-    fetch(`http://localhost:8000/auth/invite-info/${token}`)
+    fetch(`${API_BASE}/auth/invite-info/${token}`)
       .then(res => res.json())
       .then(data => {
         if (data.detail) {
@@ -38,7 +39,7 @@ function JoinContent() {
     if (!token) return;
     
     try {
-      const res = await fetch("http://localhost:8000/auth/join", {
+      const res = await fetch(`${API_BASE}/auth/join`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/config";
 
 /* ── Jira-inspired Dark Theme Tokens ─────────────────────────────────────── */
 const C = {
@@ -143,7 +144,7 @@ export default function AssessPage() {
     const cid = localStorage.getItem("company_id");
     if (cid) {
       setCompanyId(cid);
-      fetch(`http://localhost:8000/company/info?company_id=${cid}`)
+      fetch(`${API_BASE}/company/info?company_id=${cid}`)
         .then(res => res.json())
         .then(info => {
           if (info.name) {
@@ -250,7 +251,7 @@ export default function AssessPage() {
           globalMetrics["mttr_hours"] = doraResult.dora.mttr.value;
         }
 
-        await fetch(`http://localhost:8000/company/profile?company_id=${companyId}`, {
+        await fetch(`${API_BASE}/company/profile?company_id=${companyId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(globalMetrics),
@@ -258,7 +259,7 @@ export default function AssessPage() {
       }
 
       // ── Generate full report ────────────────────────────────────────────────
-      const res = await fetch("http://localhost:8000/full_report", {
+      const res = await fetch(`${API_BASE}/full_report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

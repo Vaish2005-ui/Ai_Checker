@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Code2, GitBranch, Bug, Gauge, Activity, Rocket, Shield, AlertTriangle, CheckCircle2, Clock, TrendingUp, Zap, GitPullRequest, BarChart3 } from "lucide-react";
+import { API_BASE } from "@/lib/config";
 
 const CARD_CLASSES = "bg-white border-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[24px]";
 
@@ -17,8 +18,8 @@ export default function SoftwareDashboard() {
     if (!compId) { router.push("/"); return; }
 
     Promise.all([
-      fetch(`http://localhost:8000/department/${compId}/software/devmetrics`).then(r => r.json()),
-      fetch(`http://localhost:8000/department/${compId}/software/risk`).then(r => r.json()),
+      fetch(`${API_BASE}/department/${compId}/software/devmetrics`).then(r => r.json()),
+      fetch(`${API_BASE}/department/${compId}/software/risk`).then(r => r.json()),
     ]).then(([dm, rd]) => {
       setDevMetrics(dm);
       setRiskData(rd);

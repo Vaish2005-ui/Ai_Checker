@@ -1,15 +1,24 @@
 """
 api.py — FastAPI backend (v3 — Jira-like department system)
 Run: uvicorn api:app --reload --port 8000
+
+AWS Services: DynamoDB, S3 (models), CloudWatch (logging), Secrets Manager (creds)
 """
 
-from fastapi import FastAPI, HTTPException
+import logging
+import time
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 import sys, os, json, hashlib, uuid
 from uuid import uuid4
 from typing import List, Optional, Dict, Any
+
+# ── Initialize Logging ────────────────────────────────────────────────────────
+from logging_config import setup_logging
+setup_logging()
+logger = logging.getLogger("api")
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from simulation import SimulationEngine
@@ -18,7 +27,7 @@ from preprocess import FEATURE_META, DEFAULT_PROFILE
 app = FastAPI(title="Startup Risk API v3 — Jira-like Departments")
 
 # ── DynamoDB Database ──────────────────────────────────────────────────────────
-from database import get_company, save_company, get_all_companies, get_invite, save_invite
+from database import get_company, save_company, get_all_companies, get_invite, save_invite, get_company_by_email
 
 def hash_pw(pw: str) -> str:
     return hashlib.sha256(pw.encode()).hexdigest()
@@ -105,7 +114,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Request Logging Middleware ────────────────────────────────────────────────
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.time()
+    response = await call_next(request)
+    latency_ms = round((time.time() - start) * 1000, 1)
+    logger.info(
+        "%s %s → %s (%.1fms)",
+        request.method, request.url.path, response.status_code, latency_ms,
+        extra={
+            "method": request.method,
+            "path": request.url.path,
+            "status_code": response.status_code,
+            "latency_ms": latency_ms,
+            "event": "request",
+        },
+    )
+    return response
+
 engine = SimulationEngine()
+logger.info("🚀 API ready — SimulationEngine loaded")
 
 # ── Pydantic Models ───────────────────────────────────────────────────────────
 class StartupProfile(BaseModel):
@@ -228,15 +257,6 @@ def find_member_by_token(token: str):
     for m in comp.get("members", []):
         if m["email"] == email: return cid, m
     return None, None
-    parts = token.split(":", 1)
-    company_id, email = parts[0], parts[1]
-    comp = db["companies"].get(company_id)
-    if not comp:
-        return None, None
-    for m in comp.get("members", []):
-        if m["email"] == email:
-            return company_id, m
-    return None, None
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CORE ML ENDPOINTS
@@ -244,7 +264,16 @@ def find_member_by_token(token: str):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "v3", "timestamp": datetime.now().isoformat()}
+    return {
+        "status": "ok", "version": "v3",
+        "timestamp": datetime.now().isoformat(),
+        "services": {
+            "dynamodb": "connected",
+            "s3": "enabled" if os.getenv("USE_S3_MODELS", "true").lower() == "true" else "disabled",
+            "cloudwatch": "enabled" if os.getenv("CLOUDWATCH_ENABLED", "false").lower() == "true" else "disabled",
+            "environment": os.getenv("ENVIRONMENT", "development"),
+        },
+    }
 
 @app.get("/")
 def root():
@@ -253,6 +282,10 @@ def root():
 @app.post("/predict")
 def predict(p: StartupProfile):
     risk = engine.predict_risk(to_dict(p))
+    logger.info(
+        "Prediction: %.1f%% risk", risk * 100,
+        extra={"event": "prediction", "risk_score": round(risk * 100, 1)},
+    )
     return {
         "risk": risk,
         "risk_pct": round(risk * 100, 1),
@@ -309,10 +342,10 @@ def full_report(p: StartupProfile, weeks: int = 12):
 @app.post("/auth/register")
 def register(req: RegisterRequest):
     email = req.email.lower().strip()
-    for cdata in get_all_companies():
-        for m in cdata.get("members", []):
-            if m["email"] == email:
-                raise HTTPException(status_code=400, detail="Email already registered")
+    # Check if email already exists (uses GSI if available)
+    existing_comp, existing_member = get_company_by_email(email)
+    if existing_member:
+        raise HTTPException(status_code=400, detail="Email already registered")
     
     solo_cid = "solo"
     comp = get_company(solo_cid)
@@ -337,22 +370,28 @@ def register(req: RegisterRequest):
         "department": "all",
     })
     save_company(comp)
+    logger.info("New registration: %s", email,
+                extra={"event": "register", "user_email": email})
     return {"status": "success", "token": f"{solo_cid}:{email}", "role": "admin", "company_id": solo_cid, "name": req.name}
 
 @app.post("/auth/login")
 def login(req: LoginRequest):
     email = req.email.lower().strip()
-    for cdata in get_all_companies():
-        for m in cdata.get("members", []):
-            if m["email"] == email and verify_pw(req.password, m["password"]):
-                return {
-                    "status": "success",
-                    "token": f"{cdata.get('company_id')}:{email}",
-                    "role": m["role"],
-                    "department": m["department"],
-                    "company_id": cdata.get("company_id"),
-                    "name": m["name"],
-                }
+    # Use GSI lookup (fast) with scan fallback
+    comp, member = get_company_by_email(email)
+    if comp and member and verify_pw(req.password, member["password"]):
+        logger.info("Login success: %s", email,
+                    extra={"event": "login_success", "user_email": email, "company_id": comp.get("company_id")})
+        return {
+            "status": "success",
+            "token": f"{comp.get('company_id')}:{email}",
+            "role": member["role"],
+            "department": member["department"],
+            "company_id": comp.get("company_id"),
+            "name": member["name"],
+        }
+    logger.warning("Login failed: %s", email,
+                   extra={"event": "login_failed", "user_email": email})
     raise HTTPException(status_code=401, detail="Invalid email or password")
 
 @app.get("/auth/me")
@@ -655,11 +694,10 @@ def get_dept_config(dept: str):
 
 @app.post("/department/update-metrics")
 def update_metrics(req: DepartmentUpdate):
-    db = load_db()
-    if req.company_id not in db["companies"]:
+    comp = get_company(req.company_id)
+    if not comp:
         raise HTTPException(status_code=404, detail="Company not found")
     dk = req.department.lower()
-    comp = db["companies"][req.company_id]
     comp.setdefault("department_metrics", {})[dk] = {
         **comp.get("department_metrics", {}).get(dk, {}),
         **req.metrics,
@@ -667,6 +705,8 @@ def update_metrics(req: DepartmentUpdate):
     if dk not in [d.lower() for d in comp.get("departments", [])]:
         comp.setdefault("departments", []).append(dk)
     save_company(comp)
+    logger.info("Metrics updated: %s/%s", req.company_id, dk,
+                extra={"event": "metrics_updated", "company_id": req.company_id})
     return {"status": "success"}
 
 @app.get("/department/{company_id}/{dept}/risk")

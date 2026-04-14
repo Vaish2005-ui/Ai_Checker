@@ -5,10 +5,16 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Core source code
 COPY src/ src/
+COPY api.py .
+COPY database.py .
+COPY aws_config.py .
+COPY logging_config.py .
+
+# ML models as fallback (primary source is S3)
 COPY models/ models/
 COPY data/processed/ data/processed/
-COPY api.py .
 
 EXPOSE 8000
 

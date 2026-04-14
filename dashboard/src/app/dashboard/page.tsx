@@ -5,6 +5,7 @@ import {
   predict, getImpact, getTimeline, simulate,
   DEFAULT_PROFILE, Profile
 } from "@/lib/api";
+import { API_BASE } from "@/lib/config";
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
   BarChart, Bar, Cell, CartesianGrid, ReferenceLine,
@@ -167,7 +168,7 @@ export default function Home() {
   useEffect(() => {
     const compId = localStorage.getItem("company_id");
     if (compId) {
-      fetch(`http://localhost:8000/company/info?company_id=${compId}`)
+      fetch(`${API_BASE}/company/info?company_id=${compId}`)
         .then(res => res.json())
         .then(data => { if (data.name) setStartupName(data.name); })
         .catch(console.error);

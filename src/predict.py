@@ -2,22 +2,59 @@
 predict.py
 ----------
 Thin wrapper to load the model and predict risk for a startup.
+Models load from S3 first, with local filesystem fallback.
 """
 
 import joblib
 import pandas as pd
 import sys
 import os
+import logging
+import tempfile
 
 sys.path.insert(0, os.path.dirname(__file__))
 from preprocess import load_and_prepare, prepare_single, DEFAULT_PROFILE
 
-MODEL_PATH  = os.path.join(os.path.dirname(__file__), "../models/rf_model.pkl")
+logger = logging.getLogger("predict")
+
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
+MODEL_PATH  = os.path.join(MODEL_DIR, "rf_model.pkl")
 DATA_PATH   = os.path.join(os.path.dirname(__file__), "../data/processed/final_dataset.csv")
 
 
+def _load_model_from_s3_or_local(filename: str):
+    """
+    Load a .pkl file with S3 → local fallback.
+    Caches S3 downloads to temp directory.
+    """
+    # 1. Check temp cache
+    cache_dir = os.path.join(tempfile.gettempdir(), "ai_checker_models")
+    cached_path = os.path.join(cache_dir, filename)
+    if os.path.exists(cached_path):
+        return joblib.load(cached_path)
+
+    # 2. Try S3
+    try:
+        from aws_config import s3_client, S3_MODELS_BUCKET, USE_S3_MODELS
+        if USE_S3_MODELS and s3_client is not None:
+            os.makedirs(cache_dir, exist_ok=True)
+            s3_client.download_file(S3_MODELS_BUCKET, f"models/{filename}", cached_path)
+            logger.info("Loaded %s from S3", filename)
+            return joblib.load(cached_path)
+    except Exception as e:
+        logger.debug("S3 load failed for %s: %s", filename, e)
+
+    # 3. Local fallback
+    local_path = os.path.join(MODEL_DIR, filename)
+    if os.path.exists(local_path):
+        logger.info("Loaded %s from local", filename)
+        return joblib.load(local_path)
+
+    raise FileNotFoundError(f"Model '{filename}' not found in S3 or {local_path}")
+
+
 def load_model_and_features():
-    model = joblib.load(MODEL_PATH)
+    model = _load_model_from_s3_or_local("rf_model.pkl")
     _, _, feature_names = load_and_prepare(DATA_PATH)
     return model, feature_names
 

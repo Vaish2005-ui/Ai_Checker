@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Users, Building2, TrendingUp, Shield, BarChart, Plus, Mail, Network, Code2, ChevronRight } from "lucide-react";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import AppNavbar from "@/components/AppNavbar";
+import { API_BASE } from "@/lib/config";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -29,17 +30,17 @@ export default function AdminPage() {
 
     const fetchData = async () => {
       try {
-        const dRes = await fetch(`http://localhost:8000/company/departments?company_id=${compId}`);
+        const dRes = await fetch(`${API_BASE}/company/departments?company_id=${compId}`);
         const dData = await dRes.json();
         setDepartments(dData);
 
-        const mRes = await fetch(`http://localhost:8000/company/members?company_id=${compId}`);
+        const mRes = await fetch(`${API_BASE}/company/members?company_id=${compId}`);
         const mData = await mRes.json();
         setMembers(mData);
 
         const risks = await Promise.all(
           dData.map(async (d: any) => {
-            const rRes = await fetch(`http://localhost:8000/department/${compId}/${d.name}/risk`);
+            const rRes = await fetch(`${API_BASE}/department/${compId}/${d.name}/risk`);
             return await rRes.json();
           })
         );
@@ -57,7 +58,7 @@ export default function AdminPage() {
     e.preventDefault();
     const compId = localStorage.getItem("company_id");
     try {
-      const res = await fetch("http://localhost:8000/company/invite", {
+      const res = await fetch(`${API_BASE}/company/invite`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

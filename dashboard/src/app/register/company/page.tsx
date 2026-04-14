@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Building2, Mail, Lock, User, Briefcase, BarChart } from "lucide-react";
+import { API_BASE } from "@/lib/config";
 
 export default function RegisterCompany() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function RegisterCompany() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:8000/company/create", {
+      const res = await fetch(`${API_BASE}/company/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, departments: ["HR"] }),
