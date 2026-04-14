@@ -83,10 +83,10 @@ export default function DepartmentSetup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-slate-200 py-12 px-6">
+    <div className="min-h-screen bg-[#F7F9FB] text-slate-800 py-12 px-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-3">Which departments do you have?</h1>
-        <p className="text-slate-400 mb-10">Select the departments you want to monitor and invite team leaders.</p>
+        <h1 className="text-4xl font-bold mb-3 text-slate-900">Which departments do you have?</h1>
+        <p className="text-slate-500 mb-10">Select the departments you want to monitor and invite team leaders.</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
           {DEPARTMENTS.map(dept => {
@@ -96,40 +96,40 @@ export default function DepartmentSetup() {
             return (
               <div 
                 key={dept.id} 
-                className={`p-4 rounded-2xl border transition-all duration-300 ${isActive ? 'bg-[#13131f] ' + dept.border : 'bg-[#0f0f1a] border-[#1e2035] hover:border-slate-700 cursor-pointer'}`}
+                className={`p-4 rounded-2xl border transition-all duration-300 shadow-sm ${isActive ? 'bg-white ' + dept.border : 'bg-white border-slate-200 hover:border-slate-300 cursor-pointer'}`}
                 onClick={() => !isActive && toggleDept(dept.id)}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${isActive ? dept.bg : 'bg-[#1e2035]'}`}>
-                      <Icon className={`w-5 h-5 ${isActive ? dept.color : 'text-slate-500'}`} />
+                    <div className={`p-2 rounded-lg ${isActive ? dept.bg : 'bg-slate-50 border border-slate-100'}`}>
+                      <Icon className={`w-5 h-5 ${isActive ? dept.color : 'text-slate-400'}`} />
                     </div>
-                    <span className={`font-medium ${isActive ? 'text-white' : 'text-slate-400'}`}>{dept.name}</span>
+                    <span className={`font-medium ${isActive ? 'text-slate-900' : 'text-slate-500'}`}>{dept.name}</span>
                   </div>
                   
                   {isActive ? (
                     <button 
                       onClick={(e) => { e.stopPropagation(); toggleDept(dept.id); }}
-                      className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center hover:bg-slate-700"
+                      className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200"
                     >
-                      <Check className="w-4 h-4 text-slate-300" />
+                      <Check className="w-4 h-4 text-slate-600" />
                     </button>
                   ) : (
-                    <div className="w-6 h-6 rounded-full border border-[#1e2035]" />
+                    <div className="w-6 h-6 rounded-full border border-slate-200" />
                   )}
                 </div>
 
                 {isActive && (
                   <div className="mt-4 animate-in slide-in-from-top-2 fade-in">
-                    <label className="text-xs text-slate-400 mb-1 block">Invite Team Leader (Email)</label>
+                    <label className="text-xs text-slate-500 font-medium mb-1 block">Invite Team Leader (Email)</label>
                     <input 
                       type="email"
                       placeholder="leader@acme.com"
-                      className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-2 px-3 focus:ring-1 focus:ring-indigo-500 outline-none text-sm"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 focus:ring-2 focus:ring-indigo-500 outline-none text-sm text-slate-900"
                       value={invites[dept.id] || ""}
                       onChange={(e) => setInvite(dept.id, e.target.value)}
                     />
-                    <p className="text-[10px] text-slate-500 mt-1">They will receive a link to join your dashboard.</p>
+                    <p className="text-[10px] text-slate-400 mt-1">They will receive a link to join your dashboard.</p>
                   </div>
                 )}
               </div>
@@ -137,8 +137,8 @@ export default function DepartmentSetup() {
           })}
         </div>
 
-        <div className="flex justify-between items-center bg-[#13131f] border border-[#1e2035] p-6 rounded-2xl">
-          <p className="text-sm text-slate-400">
+        <div className="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+          <p className="text-sm text-slate-500">
             You can always add more departments and users later from the Admin Overview.
           </p>
           <button 

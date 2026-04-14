@@ -12,14 +12,14 @@ import {
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg:       "#0a0a0f",
-  surface:  "#0f0f1a",
-  card:     "#13131f",
-  border:   "#1e2035",
-  border2:  "#252540",
+  bg:       "#F7F9FB",
+  surface:  "#ffffff",
+  card:     "#ffffff",
+  border:   "#e2e8f0",
+  border2:  "#cbd5e1",
   muted:    "#64748b",
-  text:     "#e2e8f0",
-  textDim:  "#94a3b8",
+  text:     "#1e293b",
+  textDim:  "#475569",
   indigo:   "#6366f1",
   violet:   "#8b5cf6",
   red:      "#ef4444",
@@ -46,7 +46,7 @@ function Topbar({ name, pct, label, badge }: { name: string; pct: number; label:
         <div style={{ background: C.indigo }} className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold">AI</div>
         <span style={{ color: C.textDim }} className="text-xs">Risk Monitor /</span>
         <span className="text-sm font-semibold" style={{ color: C.text }}>{name}</span>
-        <span style={{ background: "#1e2035", color: C.muted }} className="text-xs px-2 py-0.5 rounded font-mono">v2.1.5</span>
+        <span style={{ background: C.border2, color: C.text }} className="text-xs px-2 py-0.5 rounded font-mono">v2.1.5</span>
       </div>
       <div className="flex items-center gap-6 text-xs">
         {[
@@ -111,7 +111,7 @@ function NavIcon({ icon, active, onClick }: { icon: string; active?: boolean; on
   return (
     <button onClick={onClick}
       style={{ background: active ? C.indigo + "33" : "transparent", color: active ? C.indigo : C.muted }}
-      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg hover:bg-white/5 transition-colors">
+      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg hover:bg-slate-100 transition-colors">
       {icon}
     </button>
   );
@@ -228,7 +228,7 @@ export default function Home() {
             className="flex-shrink-0 p-4">
             <div className="flex items-center justify-between mb-4">
               <span style={{ color: C.muted }} className="text-[10px] uppercase tracking-widest">Startup Profile</span>
-              <button onClick={() => setSideOpen(false)} style={{ color: C.muted }} className="text-xs hover:text-white">✕</button>
+              <button onClick={() => setSideOpen(false)} style={{ color: C.muted }} className="text-xs hover:text-slate-900">✕</button>
             </div>
 
             <input value={startupName} onChange={e => setStartupName(e.target.value)}
@@ -268,7 +268,7 @@ export default function Home() {
           {!sideOpen && (
             <button onClick={() => setSideOpen(true)}
               style={{ background: C.card, border: `1px solid ${C.border}`, color: C.muted }}
-              className="mb-4 px-3 py-1.5 rounded-lg text-xs hover:text-white transition-colors">
+              className="mb-4 px-3 py-1.5 rounded-lg text-xs hover:text-slate-900 transition-colors">
               ☰ Profile
             </button>
           )}
@@ -290,7 +290,7 @@ export default function Home() {
                   borderBottom: tab === i ? `2px solid ${C.indigo}` : "2px solid transparent",
                   background: "transparent",
                 }}
-                className="px-4 py-2.5 text-xs font-medium transition-colors hover:text-white">
+                className="px-4 py-2.5 text-xs font-medium transition-colors hover:text-slate-900">
                 {t}
               </button>
             ))}

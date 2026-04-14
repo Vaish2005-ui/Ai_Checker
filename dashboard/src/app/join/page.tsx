@@ -68,8 +68,8 @@ function JoinContent() {
         <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
           <div className="text-red-500 font-bold text-2xl">X</div>
         </div>
-        <h2 className="text-2xl font-bold mb-2 text-white">Invalid Invite</h2>
-        <p className="text-slate-400">{error}</p>
+        <h2 className="text-2xl font-bold mb-2 text-slate-900">Invalid Invite</h2>
+        <p className="text-slate-500">{error}</p>
       </div>
     );
   }
@@ -81,18 +81,18 @@ function JoinContent() {
   if (!token) {
     return (
       <div className="text-center p-8">
-        <h2 className="text-2xl font-bold mb-2 text-white">Missing Invite Token</h2>
-        <p className="text-slate-400">Please click the link in your email to join.</p>
+        <h2 className="text-2xl font-bold mb-2 text-slate-900">Missing Invite Token</h2>
+        <p className="text-slate-500">Please click the link in your email to join.</p>
       </div>
     );
   }
 
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between mb-8 pb-6 border-b border-[#1e2035]">
+      <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-100">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-1">Join the Team</h2>
-          <p className="text-slate-400 text-sm flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-900 mb-1">Join the Team</h2>
+          <p className="text-slate-500 text-sm flex items-center gap-2">
             <Building className="w-4 h-4" /> {inviteInfo.company_name}
           </p>
         </div>
@@ -103,12 +103,12 @@ function JoinContent() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
-          <label className="text-sm text-slate-400">Email Address</label>
+          <label className="text-sm text-slate-500 font-medium">Email Address</label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               readOnly
-              className="w-full bg-[#13131f] border border-[#1e2035] rounded-xl py-3 pl-10 pr-4 text-slate-500 opacity-70 cursor-not-allowed"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-500 opacity-70 cursor-not-allowed"
               value={inviteInfo.email}
             />
             <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
@@ -116,13 +116,13 @@ function JoinContent() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-slate-400">Your Name</label>
+          <label className="text-sm text-slate-500 font-medium">Your Name</label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               required
               autoFocus
-              className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-slate-900"
               placeholder="John Doe"
               value={form.name}
               onChange={e => setForm({...form, name: e.target.value})}
@@ -131,12 +131,12 @@ function JoinContent() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm text-slate-400">Create Password</label>
+          <label className="text-sm text-slate-500 font-medium">Create Password</label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               required type="password"
-              className="w-full bg-[#0a0a0f] border border-[#1e2035] rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-slate-900"
               placeholder="••••••••"
               value={form.password}
               onChange={e => setForm({...form, password: e.target.value})}
@@ -157,10 +157,10 @@ function JoinContent() {
 
 export default function JoinTeam() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] text-slate-200">
-      <div className="w-full max-w-md bg-[#13131f] border border-[#1e2035] rounded-3xl shadow-2xl relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#F7F9FB] text-slate-800">
+      <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl shadow-xl relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full" />
-        <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+        <Suspense fallback={<div className="p-8 text-center text-slate-500">Loading...</div>}>
           <JoinContent />
         </Suspense>
       </div>

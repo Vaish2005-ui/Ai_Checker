@@ -3,16 +3,16 @@ import { Shield, Users, DollarSign, Cog, Target, Briefcase } from "lucide-react"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen text-slate-200 bg-[#0a0a0f] font-sans selection:bg-indigo-500/30">
+    <div className="min-h-screen text-slate-800 bg-[#F7F9FB] font-sans selection:bg-indigo-500/30">
       <main className="max-w-6xl mx-auto px-6 py-20 flex flex-col items-center">
         {/* Hero Section */}
         <div className="text-center mt-20 mb-32 relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/20 blur-[100px] rounded-full -z-10 pointer-events-none" />
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-slate-900">
             AI-powered startup <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-500">failure prediction</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-600">failure prediction</span>
           </h1>
-          <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">
             Unify risk monitoring across your entire organization. Anticipate bottlenecks, assess department health, and simulate outcomes before they happen.
           </p>
           
@@ -25,13 +25,13 @@ export default function LandingPage() {
             </Link>
             <Link 
               href="/login" 
-              className="px-8 py-4 rounded-full bg-[#13131f] border border-[#1e2035] hover:border-indigo-500/40 hover:bg-[#1a1a2e] font-medium text-slate-300 transition-all duration-300 w-full sm:w-auto text-center"
+              className="px-8 py-4 rounded-full bg-white border border-slate-200 hover:border-indigo-500/40 hover:bg-slate-50 font-medium text-slate-700 transition-all duration-300 w-full sm:w-auto text-center shadow-sm"
             >
               Sign in
             </Link>
             <Link 
               href="/join" 
-              className="px-8 py-4 rounded-full bg-[#13131f] border border-[#1e2035] hover:border-slate-600 hover:bg-[#1a1a2e] font-medium text-slate-300 transition-all duration-300 w-full sm:w-auto text-center"
+              className="px-8 py-4 rounded-full bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 font-medium text-slate-700 transition-all duration-300 w-full sm:w-auto text-center shadow-sm"
             >
               Join via invite
             </Link>
@@ -40,7 +40,7 @@ export default function LandingPage() {
 
         {/* Feature Highlights */}
         <div className="w-full">
-          <h2 className="text-3xl font-bold text-center mb-16 text-slate-100">Comprehensive Risk Monitoring</h2>
+          <h2 className="text-3xl font-bold text-center mb-16 text-slate-900">Comprehensive Risk Monitoring</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <FeatureCard 
@@ -95,12 +95,12 @@ export default function LandingPage() {
 
 function FeatureCard({ icon, title, desc, borderColor, bgColor }: any) {
   return (
-    <div className={`p-6 rounded-2xl bg-[#13131f] border border-[#1e2035] hover:${borderColor} hover:${bgColor} transition-colors duration-300 group`}>
-      <div className="p-3 bg-[#1e2035] w-fit rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
+    <div className={`p-6 rounded-2xl bg-white border border-slate-200 hover:${borderColor} hover:${bgColor} transition-colors duration-300 group shadow-sm`}>
+      <div className="p-3 bg-slate-50 w-fit rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 border border-slate-100">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-slate-400 leading-relaxed text-sm">{desc}</p>
+      <h3 className="text-xl font-semibold mb-2 text-slate-900">{title}</h3>
+      <p className="text-slate-600 leading-relaxed text-sm">{desc}</p>
     </div>
   );
 }

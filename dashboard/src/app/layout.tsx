@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body style={{ background: "#0a0a0f" }}>{children}</body>
+      <body className="bg-[#F7F9FB] text-slate-800">{children}</body>
     </html>
   );
 }
