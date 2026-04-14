@@ -510,8 +510,39 @@ def invite_user(req: Invite):
         "email": req.email.lower().strip(), "role": req.role,
         "status": "pending", "created_at": datetime.now().isoformat()
     })
+    
+    # Build invite URL using frontend domain
+    frontend_url = os.getenv("FRONTEND_URL", "https://main.d2nubdrvkwvv8s.amplifyapp.com")
+    invite_url = f"{frontend_url}/join?invite={token}"
+    
+    # Send invite email via SNS direct publish
+    try:
+        from sns_notifications import _get_sns
+        import os as _os
+        topic_arn = _os.getenv("SNS_TOPIC_ARN", "")
+        if topic_arn and _os.getenv("SNS_ENABLED", "").lower() == "true":
+            sns = _get_sns()
+            # Send directly to the invited email (not topic)
+            sns.publish(
+                TopicArn=topic_arn,
+                Subject=f"You're invited to join {comp.get('name', 'a company')} on AI Checker!",
+                Message=(
+                    f"Hi there!\n\n"
+                    f"You've been invited to join {comp.get('name', 'a company')} as a {req.role.replace('_', ' ')} "
+                    f"in the {req.department.capitalize()} department.\n\n"
+                    f"Click the link below to accept your invitation:\n"
+                    f"{invite_url}\n\n"
+                    f"Or use this invite token: {token}\n\n"
+                    f"— AI Checker Platform"
+                ),
+            )
+            logger.info("Invite email sent to %s via SNS", req.email)
+    except Exception as e:
+        logger.warning("Could not send invite email: %s", str(e))
+    
+    notify_invite(req.company_id, req.email, req.department)
     return {"status": "success", "invite_token": token,
-            "invite_url": f"http://localhost:3000/join?invite={token}"}
+            "invite_url": invite_url}
 
 @app.get("/company/info")
 def get_company_info(company_id: str):

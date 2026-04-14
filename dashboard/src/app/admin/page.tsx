@@ -70,7 +70,11 @@ export default function AdminPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        alert(`Invite sent! Token: ${data.invite_token}`);
+        // Copy invite URL to clipboard
+        if (data.invite_url) {
+          navigator.clipboard?.writeText(data.invite_url).catch(() => {});
+        }
+        alert(`✅ Invite sent to ${inviteEmail}!\n\nAn email notification has been sent.\n\nInvite link: ${data.invite_url}`);
         setInviteEmail("");
       } else {
         alert("Failed to send invite.");
