@@ -131,7 +131,6 @@ def setup_sns_topic():
         sns = _get_sns()
         response = sns.create_topic(
             Name="ai-checker-notifications",
-            Tags=[{"Key": "Project", "Value": "AI-Checker"}],
         )
         arn = response["TopicArn"]
         logger.info("SNS topic created/found: %s", arn)

@@ -81,7 +81,7 @@
         "sns:ListSubscriptions",
         "sns:TagResource"
       ],
-      "Resource": "arn:aws:sns:us-east-1:865343245267:ai-checker-*"
+      "Resource": "*"
     },
     {
       "Sid": "CloudFrontProxy",
