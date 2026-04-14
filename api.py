@@ -26,6 +26,20 @@ from preprocess import FEATURE_META, DEFAULT_PROFILE
 
 app = FastAPI(title="Startup Risk API v3 — Jira-like Departments")
 
+# ── CORS — allow frontend origins ──────────────────────────────────────────────
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://main.d2nubdrvkwvv8s.amplifyapp.com",
+        "https://dj5sgnzw43nd1.cloudfront.net",
+        "http://localhost:3000",
+        "http://localhost:3001",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # ── DynamoDB Database ──────────────────────────────────────────────────────────
 from database import get_company, save_company, get_all_companies, get_invite, save_invite, get_company_by_email
 
