@@ -515,46 +515,58 @@ def invite_user(req: Invite):
     frontend_url = os.getenv("FRONTEND_URL", "https://main.d2nubdrvkwvv8s.amplifyapp.com")
     invite_url = f"{frontend_url}/join?invite={token}"
     
-    # Send invite email directly to the person via SES
+    # Send invite email via SMTP (Gmail)
     try:
-        ses = boto3.client("ses", region_name=os.getenv("AWS_REGION", "us-east-1"),
-                           aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-                           aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
-        sender = os.getenv("SES_SENDER_EMAIL", "no-reply@ai-checker.com")
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        
+        smtp_email = os.getenv("SMTP_EMAIL", "")
+        smtp_password = os.getenv("SMTP_APP_PASSWORD", "")
         company_name = comp.get("name", "a company")
-        ses.send_email(
-            Source=sender,
-            Destination={"ToAddresses": [req.email.lower().strip()]},
-            Message={
-                "Subject": {"Data": f"You're invited to {company_name} on AI Checker!"},
-                "Body": {
-                    "Text": {"Data": (
-                        f"Hi there!\n\n"
-                        f"You've been invited to join {company_name} as a {req.role.replace('_', ' ')} "
-                        f"in the {req.department.capitalize()} department.\n\n"
-                        f"Click the link below to accept your invitation:\n"
-                        f"{invite_url}\n\n"
-                        f"Or use this invite token: {token}\n\n"
-                        f"— AI Checker Platform"
-                    )},
-                    "Html": {"Data": (
-                        f"<div style='font-family:Arial,sans-serif;max-width:600px;margin:0 auto;'>"
-                        f"<div style='background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px;border-radius:16px 16px 0 0;text-align:center;'>"
-                        f"<h1 style='color:white;margin:0;font-size:24px;'>You're Invited! 🎉</h1></div>"
-                        f"<div style='background:#fff;padding:32px;border:1px solid #e2e8f0;border-radius:0 0 16px 16px;'>"
-                        f"<p style='font-size:16px;color:#334155;'>You've been invited to join <strong>{company_name}</strong> as a "
-                        f"<strong>{req.role.replace('_', ' ')}</strong> in the <strong>{req.department.capitalize()}</strong> department.</p>"
-                        f"<a href='{invite_url}' style='display:inline-block;background:#6366f1;color:white;padding:14px 32px;"
-                        f"border-radius:12px;text-decoration:none;font-weight:bold;font-size:16px;margin:20px 0;'>Accept Invitation</a>"
-                        f"<p style='font-size:13px;color:#94a3b8;margin-top:24px;'>Or paste this link: {invite_url}</p>"
-                        f"</div></div>"
-                    )},
-                },
-            },
-        )
-        logger.info("Invite email sent directly to %s via SES", req.email)
+        
+        if smtp_email and smtp_password:
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = f"You're invited to {company_name} on AI Checker!"
+            msg["From"] = f"AI Checker <{smtp_email}>"
+            msg["To"] = req.email.lower().strip()
+            
+            text_body = (
+                f"Hi there!\n\n"
+                f"You've been invited to join {company_name} as a {req.role.replace('_', ' ')} "
+                f"in the {req.department.capitalize()} department.\n\n"
+                f"Click the link below to accept your invitation:\n"
+                f"{invite_url}\n\n"
+                f"Your invite token: {token}\n\n"
+                f"-- AI Checker Platform"
+            )
+            
+            html_body = (
+                f"<div style='font-family:Arial,sans-serif;max-width:600px;margin:0 auto;'>"
+                f"<div style='background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px;border-radius:16px 16px 0 0;text-align:center;'>"
+                f"<h1 style='color:white;margin:0;font-size:24px;'>You're Invited! 🎉</h1></div>"
+                f"<div style='background:#fff;padding:32px;border:1px solid #e2e8f0;border-radius:0 0 16px 16px;'>"
+                f"<p style='font-size:16px;color:#334155;'>You've been invited to join <strong>{company_name}</strong> as a "
+                f"<strong>{req.role.replace('_', ' ')}</strong> in the <strong>{req.department.capitalize()}</strong> department.</p>"
+                f"<a href='{invite_url}' style='display:inline-block;background:#6366f1;color:white;padding:14px 32px;"
+                f"border-radius:12px;text-decoration:none;font-weight:bold;font-size:16px;margin:20px 0;'>Accept Invitation</a>"
+                f"<p style='font-size:12px;color:#94a3b8;margin-top:16px;'>Invite Token: <code style='background:#f1f5f9;padding:4px 8px;border-radius:4px;'>{token}</code></p>"
+                f"<p style='font-size:13px;color:#94a3b8;margin-top:8px;'>Or paste this link: {invite_url}</p>"
+                f"</div></div>"
+            )
+            
+            msg.attach(MIMEText(text_body, "plain"))
+            msg.attach(MIMEText(html_body, "html"))
+            
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+                server.login(smtp_email, smtp_password)
+                server.sendmail(smtp_email, req.email.lower().strip(), msg.as_string())
+            
+            logger.info("Invite email sent to %s via SMTP", req.email)
+        else:
+            logger.warning("SMTP not configured, skipping invite email")
     except Exception as e:
-        logger.warning("Could not send invite email via SES: %s", str(e))
+        logger.warning("Could not send invite email via SMTP: %s", str(e))
     
     notify_invite(req.company_id, req.email, req.department)
     return {"status": "success", "invite_token": token,
