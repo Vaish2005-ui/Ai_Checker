@@ -42,27 +42,9 @@ export default function DepartmentSetup() {
     try {
       const companyId = localStorage.getItem("company_id");
       
-      // We should probably update the company with the new departments but the API
-      // right now uses /department/update-metrics to add departments, or we could just 
-      // rely on the invites and manual addition later. Let's send invites.
-      
       const activeIds = Object.keys(activeDepts).filter(k => activeDepts[k]);
       
-      for (const deptId of activeIds) {
-        if (invites[deptId]) {
-          await fetch(`${API_BASE}/company/invite`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              company_id: companyId,
-              department: deptId,
-              email: invites[deptId]
-            })
-          });
-        }
-      }
-      
-      // Update the company's active departments (We'll use update-metrics dummy call to just register them)
+      // First register all departments
       for (const deptId of activeIds) {
         await fetch(`${API_BASE}/department/update-metrics`, {
             method: "POST",
@@ -73,6 +55,30 @@ export default function DepartmentSetup() {
               metrics: {}
             })
           });
+      }
+
+      // Then send invites with role: team_leader
+      const sentInvites: string[] = [];
+      for (const deptId of activeIds) {
+        if (invites[deptId] && invites[deptId].trim()) {
+          const res = await fetch(`${API_BASE}/company/invite`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              company_id: companyId,
+              department: deptId,
+              email: invites[deptId].trim(),
+              role: "team_leader"
+            })
+          });
+          if (res.ok) {
+            sentInvites.push(`${invites[deptId]} → ${deptId}`);
+          }
+        }
+      }
+
+      if (sentInvites.length > 0) {
+        alert(`✅ Invites sent via email!\n\n${sentInvites.join("\n")}\n\nThey'll receive a link to join.`);
       }
 
       router.push("/assess");
