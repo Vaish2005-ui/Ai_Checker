@@ -1,0 +1,2 @@
+SMTP_EMAIL=Kaushaltrivedi268@gmail.com
+SMTP_APP_PASSWORD=vnmj ljxc rake nvux
