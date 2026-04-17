@@ -31,7 +31,7 @@ app = FastAPI(title="Startup Risk API v3 — Jira-like Departments")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://main.d2nubdrvkwvv8s.amplifyapp.com",
+        "http://ai-checker-frontend-v2.s3-website-us-east-1.amazonaws.com",
         "https://dj5sgnzw43nd1.cloudfront.net",
         "http://localhost:3000",
         "http://localhost:3001",
@@ -512,8 +512,8 @@ def invite_user(req: Invite):
     })
     
     # Build invite URL using frontend domain
-    frontend_url = os.getenv("FRONTEND_URL", "https://main.d2nubdrvkwvv8s.amplifyapp.com")
-    invite_url = f"{frontend_url}/join?invite={token}"
+    frontend_url = os.getenv("FRONTEND_URL", "http://ai-checker-frontend-v2.s3-website-us-east-1.amazonaws.com")
+    invite_url = f"{frontend_url}/join/?invite={token}"
     
     # Send invite email via SMTP (Gmail)
     try:
