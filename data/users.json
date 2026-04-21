@@ -1,0 +1,702 @@
+{
+  "companies": {
+    "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "vaishnavifalle1@gmail.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance"
+      ],
+      "members": [
+        {
+          "email": "vaishnavifalle1@gmail.com",
+          "name": "vaishnavi",
+          "password": "Vaishnavi",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {},
+        "finance": {}
+      }
+    },
+    "30f45e60-5395-4d08-a93f-e4ae4d238d96": {
+      "name": "FixTest",
+      "industry": "Tech",
+      "size": "1-10",
+      "admin_email": "fix@test.com",
+      "departments": [
+        "HR"
+      ],
+      "members": [
+        {
+          "email": "fix@test.com",
+          "name": "Admin",
+          "password": "password",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {}
+      }
+    },
+    "093aff1a-b3a8-44a7-8e8a-d2e0b229d990": {
+      "name": "acme",
+      "industry": "trcd",
+      "size": "1-10",
+      "admin_email": "abc@gmail.com",
+      "departments": [
+        "HR",
+        "hr"
+      ],
+      "members": [
+        {
+          "email": "abc@gmail.com",
+          "name": "vaish",
+          "password": "Vaishnavi",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "b0deadd9-3520-4bcd-ab89-1247291ea35f": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "Kaushaltrivedi268@gmail.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance"
+      ],
+      "members": [
+        {
+          "email": "Kaushaltrivedi268@gmail.com",
+          "name": "vaishnavi",
+          "password": "Kaushal",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {},
+        "finance": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 13.5,
+        "How Much They Raised": 610.0,
+        "Giants": 1.7,
+        "No Budget": 0.9,
+        "Competition": 0.2,
+        "Poor Market Fit": 0.8,
+        "Acquisition Stagnation": 0.8,
+        "Platform Dependency": 1.4,
+        "Monetization Failure": 1.2,
+        "Niche Limits": 0.8,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 1.3,
+        "Regulatory Pressure": 0.6,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "fd8d79da-01d3-4c45-99d6-60532f4c21aa": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "vaish@gmail.com",
+      "departments": [
+        "HR",
+        "hr"
+      ],
+      "members": [
+        {
+          "email": "vaish@gmail.com",
+          "name": "Vaish",
+          "password": "Vaishu",
+          "role": "admin",
+          "department": "hr"
+        }
+      ],
+      "department_metrics": {
+        "HR": {},
+        "hr": {}
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 660.0,
+        "Giants": 1.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "e5c40eb1-ce8a-4e0a-a7e0-70f372122a9b": {
+      "name": "Acme Corp",
+      "industry": "Technology",
+      "size": "1-10",
+      "admin_email": "admin@acme.com",
+      "departments": [
+        "HR",
+        "hr",
+        "finance",
+        "software"
+      ],
+      "members": [
+        {
+          "email": "admin@acme.com",
+          "name": "Admin Demo",
+          "password": "password123",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "software": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "bfda2905-aab3-4bad-93f3-67e50cb4ebbf": {
+      "name": "Bento Labs",
+      "industry": "Software",
+      "size": "1-10",
+      "admin_email": "admin@bento.com",
+      "departments": [
+        "HR",
+        "hr",
+        "software"
+      ],
+      "members": [
+        {
+          "email": "admin@bento.com",
+          "name": "Bento Admin",
+          "password": "password",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "software": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "370165fe-4231-45c4-aca4-dfbde837f9be": {
+      "name": "TestCorp",
+      "industry": "Tech",
+      "size": "1-10",
+      "admin_email": "admin@testcorp.com",
+      "departments": [
+        "HR",
+        "software",
+        "engineering"
+      ],
+      "members": [
+        {
+          "email": "admin@testcorp.com",
+          "name": "Admin User",
+          "password": "password123",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "software": {},
+        "engineering": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "208758d0-6b49-4161-b211-b3d38e6c51dd": {
+      "name": "ac,e",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "dd@gmai.com",
+      "departments": [
+        "HR",
+        "finance",
+        "security"
+      ],
+      "members": [
+        {
+          "email": "dd@gmai.com",
+          "name": "ddddd",
+          "password": "ddddd",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "security": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 12.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 0.2,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "cf2f7d03-bff7-4bfa-968a-4ae521563e93": {
+      "name": "TechHost",
+      "industry": "Tech",
+      "size": "1-10",
+      "admin_email": "Vaishnavi@gmail.com",
+      "departments": [
+        "hr",
+        "finance",
+        "security",
+        "operations",
+        "marketing",
+        "software",
+        "engineering"
+      ],
+      "members": [
+        {
+          "email": "Vaishnavi@gmail.com",
+          "name": "Vaishnavi",
+          "password": "vaishnavi",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "security": {},
+        "operations": {},
+        "marketing": {},
+        "software": {},
+        "engineering": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 5.0,
+        "How Much They Raised": 680.0,
+        "Giants": 0.5,
+        "No Budget": 0.3,
+        "Competition": 0.8,
+        "Poor Market Fit": 0.2,
+        "Acquisition Stagnation": 1.6,
+        "Platform Dependency": 0.2,
+        "Monetization Failure": 0.2,
+        "Niche Limits": 0.2,
+        "Execution Flaws": 0.2,
+        "Trend Shifts": 0.1,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.1,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "c9ee3fe2-5518-4f8d-af47-5189a334080a": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "hr@acme.com",
+      "departments": [
+        "hr",
+        "finance",
+        "engineering"
+      ],
+      "members": [
+        {
+          "email": "hr@acme.com",
+          "name": "jane",
+          "password": "acmehr",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "engineering": {}
+      },
+      "board": {
+        "hr": [],
+        "finance": [
+          {
+            "id": "40f5ef64",
+            "title": "error",
+            "description": "less funding",
+            "status": "todo",
+            "priority": "high",
+            "assignee_email": "",
+            "task_type": "epic",
+            "labels": [],
+            "created_at": "2026-04-13T09:43:31.531975",
+            "department": "finance"
+          }
+        ]
+      },
+      "global_metrics": {
+        "Years of Operation": 4.0,
+        "How Much They Raised": 0.0,
+        "Giants": 0.0,
+        "No Budget": 1.0,
+        "Competition": 1.0,
+        "Poor Market Fit": 1.0,
+        "Acquisition Stagnation": 1.0,
+        "Platform Dependency": 0.5,
+        "Monetization Failure": 1.0,
+        "Niche Limits": 0.3,
+        "Execution Flaws": 1.0,
+        "Trend Shifts": 0.2,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 2.0,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.08199999999999999,
+        "deployment_frequency": 1.2,
+        "lead_time_days": 4.5,
+        "mttr_hours": 12.5
+      }
+    },
+    "87ca6dee-5e8d-4f07-8fc5-fe3110804f06": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "V@gmail.com",
+      "departments": [
+        "hr",
+        "finance",
+        "software",
+        "operations",
+        "security",
+        "engineering",
+        "marketing"
+      ],
+      "members": [
+        {
+          "email": "V@gmail.com",
+          "name": "janeee",
+          "password": "vjane",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "software": {},
+        "operations": {},
+        "security": {},
+        "engineering": {},
+        "marketing": {}
+      },
+      "board": {
+        "hr": [],
+        "security": [
+          {
+            "id": "a17c27d0",
+            "title": "bugs",
+            "description": "sss",
+            "status": "in_progress",
+            "priority": "medium",
+            "assignee_email": "",
+            "task_type": "bug",
+            "labels": [],
+            "created_at": "2026-04-13T21:16:16.087943",
+            "department": "security"
+          }
+        ]
+      },
+      "global_metrics": {
+        "Years of Operation": 4.0,
+        "How Much They Raised": 87.0,
+        "Giants": 0.0,
+        "No Budget": 1.0,
+        "Competition": 1.0,
+        "Poor Market Fit": 1.0,
+        "Acquisition Stagnation": 1.0,
+        "Platform Dependency": 0.5,
+        "Monetization Failure": 0.0,
+        "Niche Limits": 0.3,
+        "Execution Flaws": 1.0,
+        "Trend Shifts": 0.2,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.0,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    },
+    "3a691645-92de-4906-85a8-2a49f9fe772e": {
+      "name": "acme",
+      "industry": "tech",
+      "size": "1-10",
+      "admin_email": "jane@gmail.com",
+      "departments": [
+        "hr",
+        "finance",
+        "software",
+        "engineering"
+      ],
+      "members": [
+        {
+          "email": "jane@gmail.com",
+          "name": "jane",
+          "password": "jane",
+          "role": "admin",
+          "department": "all"
+        }
+      ],
+      "department_metrics": {
+        "hr": {},
+        "finance": {},
+        "software": {},
+        "engineering": {}
+      },
+      "board": {
+        "hr": []
+      },
+      "global_metrics": {
+        "Years of Operation": 4.0,
+        "How Much They Raised": 0.0,
+        "Giants": 0.0,
+        "No Budget": 1.0,
+        "Competition": 2.0,
+        "Poor Market Fit": 0.0,
+        "Acquisition Stagnation": 0.0,
+        "Platform Dependency": 0.5,
+        "Monetization Failure": 1.0,
+        "Niche Limits": 0.3,
+        "Execution Flaws": 1.0,
+        "Trend Shifts": 0.2,
+        "Toxicity/Trust Issues": 0.0,
+        "Regulatory Pressure": 0.0,
+        "Overhype": 0.1,
+        "Security Risk": 0.2,
+        "Tech Debt": 0.2,
+        "change_failure_rate": 0.1,
+        "deployment_frequency": 0.5,
+        "lead_time_days": 14.0,
+        "mttr_hours": 24.0
+      }
+    }
+  },
+  "invites": {
+    "b1083e01-6fe1-4bf7-85ad-47bf19fd89bc": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "3211ff1c-8d25-45d3-9a0b-1a2c82c20d43": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "453d980c-37f7-482a-8425-b7d28b6cc155": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "6edcf645-559d-44a1-9405-bf9897b4760e": {
+      "company_id": "3dfa8fb3-331a-4d2f-bcad-fd16f1ec7db5",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "df77e0c1-1845-44b9-93eb-f8f373d715f3": {
+      "company_id": "b0deadd9-3520-4bcd-ab89-1247291ea35f",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "227bcdce-4191-4bd7-bc46-85128b3ab258": {
+      "company_id": "b0deadd9-3520-4bcd-ab89-1247291ea35f",
+      "department": "finance",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "1630c024-f854-425f-b475-0a6d93a0ce60": {
+      "company_id": "fd8d79da-01d3-4c45-99d6-60532f4c21aa",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "status": "pending"
+    },
+    "620d1940-6281-4609-8a30-d7ff7da6ce8b": {
+      "company_id": "cf2f7d03-bff7-4bfa-968a-4ae521563e93",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "role": "team_leader",
+      "status": "pending"
+    },
+    "6da1d53e-c232-41ee-9f4f-142f30ecc382": {
+      "company_id": "cf2f7d03-bff7-4bfa-968a-4ae521563e93",
+      "department": "hr",
+      "email": "vaishnavifalle1@gmail.com",
+      "role": "team_leader",
+      "status": "pending"
+    }
+  }
+}

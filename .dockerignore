@@ -1,0 +1,11 @@
+dashboard/
+notebooks/
+.git/
+__pycache__/
+*.pyc
+node_modules/
+.next/
+*.ipynb
+.env
+.env.local
+README.md
